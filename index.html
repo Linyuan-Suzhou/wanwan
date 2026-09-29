@@ -163,6 +163,102 @@
     font-size:12px;color:#6b6f78;letter-spacing:1px;
   }
   @media(max-width:768px){footer{padding:22px}}
+
+  /* ===== 凡人商贸子页：B2B 工业风（参考制造企业官网） ===== */
+  :root{
+    --b2b:#1e5bb8; --b2b-dk:#164a96; --b2b-bg:#f4f8fc; --b2b-line:#d8e4f2;
+  }
+  .hotline-bar{
+    background:#fff;border-bottom:1px solid var(--b2b-line);
+    padding:10px 48px;display:flex;justify-content:flex-end;
+  }
+  .hotline-inner{font-size:13px;color:var(--muted)}
+  .hotline-inner .hl-label{margin-right:10px}
+  .hotline-inner .hl-num{color:var(--b2b);font-weight:700;font-size:16px;letter-spacing:1px}
+  .fanren-banner{
+    background:linear-gradient(135deg,#eaf2fb 0%,#d6e5f7 100%);
+    padding:70px 48px;display:flex;align-items:center;gap:40px;
+  }
+  .fb-text{flex:1}
+  .fb-tag{display:inline-block;background:var(--b2b);color:#fff;font-size:12px;letter-spacing:3px;padding:5px 14px;margin-bottom:20px}
+  .fb-text h1{font-size:clamp(28px,4vw,46px);color:#1a2a4a;line-height:1.25;margin-bottom:22px}
+  .fb-points{list-style:none}
+  .fb-points li{font-size:15px;color:#3a4a66;padding:6px 0 6px 22px;position:relative}
+  .fb-points li::before{content:"";position:absolute;left:0;top:14px;width:8px;height:8px;background:var(--b2b)}
+  .fb-chip-art{width:280px;flex-shrink:0}
+  @media(max-width:860px){
+    .hotline-bar{padding:10px 20px;justify-content:center}
+    .fanren-banner{flex-direction:column;padding:50px 24px}
+    .fb-chip-art{width:200px}
+  }
+  .fr-section{padding:60px 48px;background:#fff}
+  .fr-sec-head{text-align:center;margin-bottom:36px}
+  .fr-title{font-family:"Noto Serif SC",serif;font-size:26px;color:#1a2a4a;font-weight:700}
+  .fr-sub{font-size:12px;letter-spacing:6px;color:var(--b2b);margin-top:6px}
+  .fr-cats{display:flex;flex-wrap:wrap;justify-content:center;gap:10px;margin-bottom:30px}
+  .fr-cat{padding:7px 18px;border:1px solid var(--b2b-line);font-size:13px;color:#5a6a85;cursor:pointer;background:#fff}
+  .fr-cat.active,.fr-cat:hover{background:var(--b2b);color:#fff;border-color:var(--b2b)}
+  .fr-prod-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+  .fr-prod{border:1px solid var(--b2b-line);background:var(--b2b-bg);padding:26px 22px;transition:all .25s}
+  .fr-prod:hover{border-color:var(--b2b);box-shadow:0 8px 24px rgba(30,91,184,.1)}
+  .fr-prod .pf-ic{width:42px;height:42px;color:var(--b2b);margin-bottom:14px}
+  .fr-prod h4{font-size:16px;color:#1a2a4a;margin-bottom:8px}
+  .fr-prod p{font-size:13px;color:var(--muted);line-height:1.65}
+  .fr-prod .pf-more{display:inline-block;margin-top:12px;font-size:12px;color:var(--b2b);letter-spacing:1px}
+  @media(max-width:900px){.fr-prod-grid{grid-template-columns:1fr 1fr}}
+  @media(max-width:600px){.fr-prod-grid{grid-template-columns:1fr}}
+  .fr-advantage{background:var(--b2b-bg);padding:60px 48px;display:grid;grid-template-columns:repeat(4,1fr);gap:24px}
+  .adv-item{background:#fff;padding:30px 24px;border-top:3px solid var(--b2b)}
+  .adv-item .adv-no{font-size:12px;color:var(--b2b);letter-spacing:2px;margin-bottom:10px}
+  .adv-item h4{font-size:16px;color:#1a2a4a;margin-bottom:8px}
+  .adv-item p{font-size:13px;color:var(--muted);line-height:1.65}
+  @media(max-width:900px){.fr-advantage{grid-template-columns:1fr 1fr;padding:40px 24px}}
+  @media(max-width:560px){.fr-advantage{grid-template-columns:1fr}}
+  .fr-contact{background:#fff;padding:60px 48px;text-align:center}
+  .fr-contact .big-phone{font-family:"Noto Serif SC",serif;font-size:32px;color:var(--b2b);font-weight:700;margin:14px 0 8px}
+  .fr-contact .fr-sub-info{color:var(--muted);font-size:14px;line-height:2}
+
+  /* 产品中心：左分类 + 右产品（创版式） */
+  .fr-prod-wrap{display:flex;gap:28px;align-items:flex-start;margin-top:30px}
+  .fr-side{width:200px;flex-shrink:0;border:1px solid var(--b2b-line)}
+  .fr-side .side-tit{background:var(--b2b);color:#fff;padding:13px 20px;font-size:14px;letter-spacing:2px}
+  .fr-side .side-item{padding:12px 20px;font-size:14px;color:#3a4a66;border-bottom:1px solid var(--b2b-line);cursor:pointer;background:#fff}
+  .fr-side .side-item.active,.fr-side .side-item:hover{background:var(--b2b-bg);color:var(--b2b);box-shadow:inset 3px 0 0 var(--b2b)}
+  .fr-main{flex:1}
+  .fr-main .more{text-align:right;margin-bottom:14px}
+  .fr-main .more a{font-size:12px;color:var(--b2b);letter-spacing:1px;text-decoration:none}
+
+  /* 关于我们 */
+  .fr-about{background:var(--b2b-bg);padding:60px 48px}
+  .fr-about-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:22px;margin-top:34px}
+  .fr-about-item{background:#fff;padding:28px 24px}
+  .fr-about-item .ab-ic{width:46px;height:46px;color:var(--b2b);margin-bottom:14px}
+  .fr-about-item h4{font-size:16px;color:#1a2a4a;margin-bottom:10px;font-family:"Noto Serif SC",serif}
+  .fr-about-item p{font-size:13px;color:var(--muted);line-height:1.7}
+
+  /* 资讯中心 */
+  .fr-news{background:#fff;padding:60px 48px}
+  .fr-news-wrap{display:grid;grid-template-columns:1fr 1fr;gap:44px;margin-top:34px}
+  .news-col-tit{font-size:18px;color:#1a2a4a;border-left:4px solid var(--b2b);padding-left:12px;margin-bottom:18px;font-family:"Noto Serif SC",serif}
+  .news-col-tit small{display:block;font-size:11px;letter-spacing:2px;color:var(--muted);font-family:"Noto Sans SC",sans-serif;margin-top:3px}
+  .news-item{display:flex;gap:14px;padding:14px 0;border-bottom:1px dashed var(--b2b-line)}
+  .news-item .date{flex-shrink:0;width:54px;text-align:center;background:var(--b2b-bg);padding:8px 0}
+  .news-item .date .d{font-size:18px;color:var(--b2b);font-weight:700;line-height:1}
+  .news-item .date .m{font-size:11px;color:var(--muted);margin-top:3px}
+  .news-item .nt{font-size:14px;color:#2a3a5a;line-height:1.5}
+  .news-item .ns{font-size:12px;color:var(--muted);margin-top:4px;line-height:1.6}
+  .news-line{padding:11px 0;border-bottom:1px dashed var(--b2b-line);font-size:14px;color:#2a3a5a;cursor:pointer}
+  .news-line:hover{color:var(--b2b)}
+
+  @media(max-width:900px){
+    .fr-prod-wrap{flex-direction:column}
+    .fr-side{width:100%}
+    .fr-about-grid{grid-template-columns:1fr 1fr}
+    .fr-news-wrap{grid-template-columns:1fr;gap:30px}
+  }
+  @media(max-width:560px){
+    .fr-about-grid{grid-template-columns:1fr}
+  }
 </style>
 </head>
 <body>
@@ -243,167 +339,392 @@
 
 <!-- ============ 凡人商贸视图 ============ -->
 <div class="view" id="view-fanren">
-  <div class="sub-hero">
-    <div class="crumb">FANREN TRADING · 凡人商贸</div>
-    <h1>TI 芯片分销<br>现货 · 配单 · 询价</h1>
-    <p>专注德州仪器（Texas Instruments）全产品线分销。不炒货、不换料，每一颗芯片可追溯原厂批次。</p>
-  </div>
 
-  <section>
-    <div class="sec-head">
-      <div class="kicker">PRODUCT LINE · 产品线</div>
-      <h2>TI 全系列覆盖</h2>
-    </div>
-    <div class="prod-grid">
-      <div class="prod-cell">
-        <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="9"/><path d="M8 12h8M12 8v8"/></svg>
-        <h4>模拟芯片</h4>
-        <p>运算放大器、比较器、ADC / DAC、数据转换器，TI 模拟器件主力料号常备库存。</p>
-      </div>
-      <div class="prod-cell">
-        <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M13 2L4 14h6l-1 8 9-12h-6l1-8z"/></svg>
-        <h4>电源管理</h4>
-        <p>LDO、DC-DC、开关稳压、电池管理、PMIC，覆盖工业与消费类供电方案。</p>
-      </div>
-      <div class="prod-cell">
-        <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="5" y="5" width="14" height="14" rx="2"/><path d="M9 9h6v6H9zM9 1v4M15 1v4M9 19v4M15 19v4M1 9h4M1 15h4M19 9h4M19 15h4"/></svg>
-        <h4>嵌入式处理器</h4>
-        <p>MSP430 超低功耗 MCU、C2000 实时控制、Sitara ARM 处理器，按项目批次供货。</p>
-      </div>
-      <div class="prod-cell">
-        <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 12h16M4 12l4-4M4 12l4 4M20 12l-4-4M20 12l-4 4"/></svg>
-        <h4>接口与隔离</h4>
-        <p>RS-232 / 485、CAN、USB、以太网收发器、数字隔离器，工业通信常用料号。</p>
-      </div>
-      <div class="prod-cell">
-        <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 3v3M12 18v3M3 12h3M18 12h3M5.6 5.6l2.1 2.1M16.3 16.3l2.1 2.1M5.6 18.4l2.1-2.1M16.3 7.7l2.1-2.1"/><circle cx="12" cy="12" r="3"/></svg>
-        <h4>传感器</h4>
-        <p>温度、压力、电流、磁传感器，面向工业现场与仪器仪表板卡配套。</p>
-      </div>
-      <div class="prod-cell">
-        <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 7h18M3 12h18M3 17h12"/></svg>
-        <h4>逻辑与标准件</h4>
-        <p>74 系列逻辑、电平转换、模拟开关，BOM 缺料补料当日响应。</p>
-      </div>
-    </div>
-  </section>
-
-  <div class="brand-strip">
-    <h3>主力原厂：<span>Texas Instruments（TI）</span></h3>
-    <div class="brand-list">
-      <div class="brand-chip">TI 德州仪器</div>
-      <div class="brand-chip">MSP430</div>
-      <div class="brand-chip">C2000</div>
-      <div class="brand-chip">Sitara</div>
-      <div class="brand-chip">OPA 运放</div>
-      <div class="brand-chip">BQ 电源</div>
-      <div class="brand-chip">ISO 隔离器</div>
+  <!-- 顶部热线 -->
+  <div class="hotline-bar">
+    <div class="hotline-inner">
+      <span class="hl-label">咨询热线</span>
+      <span class="hl-num">400-000-0000</span>
     </div>
   </div>
 
-  <section>
-    <div class="sec-head">
-      <div class="kicker">SERVICE · 我们怎么供货</div>
-      <h2>三颗料也是一单</h2>
+  <!-- Banner -->
+  <div class="fanren-banner">
+    <div class="fb-text">
+      <div class="fb-tag">TEXAS INSTRUMENTS 全系列分销</div>
+      <h1>TI 芯片现货供应<br>配单 · 询价 · 替代料</h1>
+      <ul class="fb-points">
+        <li>原厂正规渠道，批次标签可追溯</li>
+        <li>常用料号常备库存，小批量当天发货</li>
+        <li>整张 BOM 配单，缺料 / 停产料一次报齐</li>
+      </ul>
     </div>
-    <div class="svc-list">
-      <div class="svc-item"><div class="no">01</div><h4>现货库存</h4><p>常用料号常备库存，小批量当天发货；急料走顺丰次日达。</p></div>
-      <div class="svc-item"><div class="no">02</div><h4>BOM 配单</h4><p>整张 BOM 发过来，缺料、替代料、停产料号一起报，不用你挨个找。</p></div>
-      <div class="svc-item"><div class="no">03</div><h4>原厂追溯</h4><p>每批货带原厂批次标签，杜绝散新、拆机件；验货不对包退。</p></div>
+    <svg class="fb-chip-art" viewBox="0 0 200 200" fill="none">
+      <rect x="55" y="55" width="90" height="90" rx="8" fill="#1e5bb8"/>
+      <rect x="75" y="75" width="50" height="50" rx="4" fill="#fff" opacity=".9"/>
+      <text x="100" y="108" text-anchor="middle" font-family="Arial" font-size="16" font-weight="bold" fill="#1e5bb8">TI</text>
+      <g stroke="#1e5bb8" stroke-width="4">
+        <line x1="70" y1="40" x2="70" y2="55"/><line x1="100" y1="40" x2="100" y2="55"/><line x1="130" y1="40" x2="130" y2="55"/>
+        <line x1="70" y1="145" x2="70" y2="160"/><line x1="100" y1="145" x2="100" y2="160"/><line x1="130" y1="145" x2="130" y2="160"/>
+        <line x1="40" y1="70" x2="55" y2="70"/><line x1="40" y1="100" x2="55" y2="100"/><line x1="40" y1="130" x2="55" y2="130"/>
+        <line x1="145" y1="70" x2="160" y2="70"/><line x1="145" y1="100" x2="160" y2="100"/><line x1="145" y1="130" x2="160" y2="130"/>
+      </g>
+    </svg>
+  </div>
+
+  <!-- 产品中心：左分类 + 右产品 -->
+  <section class="fr-section">
+    <div class="fr-sec-head">
+      <div class="fr-title">产品中心</div>
+      <div class="fr-sub">PRODUCT</div>
+    </div>
+    <div class="fr-prod-wrap">
+      <div class="fr-side">
+        <div class="side-tit">产品分类</div>
+        <div class="side-item active">全部产品</div>
+        <div class="side-item">模拟芯片</div>
+        <div class="side-item">电源管理</div>
+        <div class="side-item">嵌入式处理器</div>
+        <div class="side-item">接口与隔离</div>
+        <div class="side-item">传感器</div>
+        <div class="side-item">逻辑标准件</div>
+      </div>
+      <div class="fr-main">
+        <div class="more"><a href="javascript:void(0)">查看更多 +</a></div>
+        <div class="fr-prod-grid" style="margin-top:0">
+          <div class="fr-prod">
+            <svg class="pf-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="9"/><path d="M8 12h8M12 8v8"/></svg>
+            <h4>运算放大器 OPA</h4>
+            <p>OPA 系列运放，主力料号常备库存。</p>
+            <span class="pf-more">查看详情 →</span>
+          </div>
+          <div class="fr-prod">
+            <svg class="pf-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M13 2L4 14h6l-1 8 9-12h-6l1-8z"/></svg>
+            <h4>DC-DC 电源芯片</h4>
+            <p>开关稳压、LDO、电池管理 BQ 系列。</p>
+            <span class="pf-more">查看详情 →</span>
+          </div>
+          <div class="fr-prod">
+            <svg class="pf-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="5" y="5" width="14" height="14" rx="2"/><path d="M9 9h6v6H9z"/></svg>
+            <h4>MSP430 MCU</h4>
+            <p>超低功耗微控制器，按项目批次供货。</p>
+            <span class="pf-more">查看详情 →</span>
+          </div>
+          <div class="fr-prod">
+            <svg class="pf-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 12h16M4 12l4-4M4 12l4 4M20 12l-4-4M20 12l-4 4"/></svg>
+            <h4>RS-485 / CAN 接口</h4>
+            <p>工业通信收发器、ISO 数字隔离器。</p>
+            <span class="pf-more">查看详情 →</span>
+          </div>
+          <div class="fr-prod">
+            <svg class="pf-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="3"/><path d="M12 3v3M12 18v3M3 12h3M18 12h3"/></svg>
+            <h4>温度 / 电流传感器</h4>
+            <p>面向工业现场与仪器板卡配套。</p>
+            <span class="pf-more">查看详情 →</span>
+          </div>
+          <div class="fr-prod">
+            <svg class="pf-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 7h18M3 12h18M3 17h12"/></svg>
+            <h4>74 系列逻辑件</h4>
+            <p>电平转换、模拟开关，缺料当日补。</p>
+            <span class="pf-more">查看详情 →</span>
+          </div>
+        </div>
+      </div>
     </div>
   </section>
 
-  <section id="contact">
-    <h2>发 BOM 表过来询价</h2>
-    <p>Excel / 截图 / 手写拍照都行，当天回报价。</p>
-    <div class="contact-grid">
-      <div class="c-item"><div class="lbl">业务</div><div class="val">凡人商贸 · 销售（待补充联系方式）</div></div>
-      <div class="c-item"><div class="lbl">LOCATION</div><div class="val">江苏 · 苏州</div></div>
-      <div class="c-item"><div class="lbl">HOURS</div><div class="val">周一至周六 9:00 – 18:00</div></div>
+  <!-- 关于我们 -->
+  <section class="fr-about">
+    <div class="fr-sec-head" style="margin-bottom:0">
+      <div class="fr-title">关于我们</div>
+      <div class="fr-sub">ABOUT</div>
+    </div>
+    <div class="fr-about-grid">
+      <div class="fr-about-item">
+        <svg class="ab-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 2l3 6 6 1-4.5 4 1 6-5.5-3-5.5 3 1-6L3 9l6-1z"/></svg>
+        <h4>渠道优势</h4>
+        <p>深耕 TI 分销渠道，常用料号常备库存，特殊料号可向原厂及授权代理调货，交期可控。</p>
+      </div>
+      <div class="fr-about-item">
+        <svg class="ab-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20c.8-3.5 3.5-5.5 6.5-5.5s5.7 2 6.5 5.5"/><circle cx="17" cy="9" r="2.5"/><path d="M15.5 14.6c2.8.3 5 2.1 5.7 4.9"/></svg>
+        <h4>配单团队</h4>
+        <p>熟悉 TI 全系列料号与替代关系，BOM 整单配单，缺料、停产、替代一次报齐。</p>
+      </div>
+      <div class="fr-about-item">
+        <svg class="ab-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 13h4l2-7 4 14 2-7h4"/></svg>
+        <h4>服务响应</h4>
+        <p>询价当天回，小批量当天发货，急料顺丰次日达；验货不对包退。</p>
+      </div>
+      <div class="fr-about-item">
+        <svg class="ab-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 21h18M5 21V8l7-5 7 5v13"/><path d="M9 21v-6h6v6"/></svg>
+        <h4>企业定位</h4>
+        <p>立足苏州、服务长三角工业与电子制造客户，做小批量、快响应的芯片供应商。</p>
+      </div>
     </div>
   </section>
+
+  <!-- 资讯中心 -->
+  <section class="fr-news">
+    <div class="fr-sec-head" style="margin-bottom:0">
+      <div class="fr-title">资讯中心</div>
+      <div class="fr-sub">NEWS</div>
+    </div>
+    <div class="fr-news-wrap">
+      <div class="fr-news-col">
+        <div class="news-col-tit">公司动态<small>COMPANY NEWS</small></div>
+        <div class="news-item">
+          <div class="date"><div class="d">18</div><div class="m">2026-08</div></div>
+          <div>
+            <div class="nt">凡人商贸新增 TI C2000 实时控制 MCU 现货批次</div>
+            <div class="ns">面向电机驱动、光伏逆变客户开放小批量试样，急料当周可发。</div>
+          </div>
+        </div>
+        <div class="news-item">
+          <div class="date"><div class="d">06</div><div class="m">2026-06</div></div>
+          <div>
+            <div class="nt">苏州本地客户 BOM 整单配单服务上线</div>
+            <div class="ns">整表发来，缺料、替代、停产料号一次报齐，不用采购挨个询价。</div>
+          </div>
+        </div>
+      </div>
+      <div class="fr-news-col">
+        <div class="news-col-tit">行业动态<small>INDUSTRY NEWS</small></div>
+        <div class="news-line">·  TI 工业模拟器件交期恢复正常，分销现货库存逐步回升</div>
+        <div class="news-line">·  国产替代背景下，常用 TI 料号选型与替代方案参考</div>
+        <div class="news-line">·  2026 年功率半导体与电源管理芯片市场走势观察</div>
+        <div class="news-line">·  工业自动化带动 MSP430、C2000 需求持续增长</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 联系 -->
+  <div class="fr-contact">
+    <div class="fr-title">联系我们</div>
+    <div class="fr-sub" style="font-size:12px;letter-spacing:6px;color:var(--b2b);margin:6px 0 10px">CONTACT</div>
+    <div class="big-phone">400-000-0000</div>
+    <div class="fr-sub-info">
+      业务：凡人商贸 · TI 芯片销售（联系方式待补充）<br>
+      地址：江苏 · 苏州　|　工作时间：周一至周六 9:00 – 18:00
+    </div>
+  </div>
 </div>
 
 <!-- ============ 婉婉科技视图 ============ -->
 <div class="view" id="view-wanwan">
-  <div class="sub-hero">
-    <div class="crumb">WANWAN TECH · 婉婉科技</div>
-    <h1>工业测量仪器仪表<br>Fluke 等品牌供应</h1>
-    <p>福禄克（Fluke）等主流品牌测试测量仪器供应商。正品行货、原厂保修，配套选型与售后校准支持。</p>
-  </div>
 
-  <section>
-    <div class="sec-head">
-      <div class="kicker">PRODUCT · 仪器品类</div>
-      <h2>产线维护到研发测试都覆盖</h2>
-    </div>
-    <div class="prod-grid">
-      <div class="prod-cell">
-        <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="6" y="3" width="12" height="18" rx="2"/><path d="M9 7h6M9 11h6M9 15h3"/></svg>
-        <h4>数字万用表</h4>
-        <p>Fluke 87V / 17B+ / 287 等手持与台式万用表，电气维护标配。</p>
-      </div>
-      <div class="prod-cell">
-        <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 12h4l2-6 4 12 2-6h6"/></svg>
-        <h4>示波器</h4>
-        <p>手持示波器、混合信号示波器，面向现场调试与研发分析。</p>
-      </div>
-      <div class="prod-cell">
-        <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="9"/><path d="M12 12l4-3M12 12V7"/></svg>
-        <h4>钳形表 / 电能质量</h4>
-        <p>交直流钳形表、功率分析仪、电能质量记录仪，配电与产线用电排查。</p>
-      </div>
-      <div class="prod-cell">
-        <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 3a9 9 0 019 9M12 3a9 9 0 00-9 9M12 3v6M7 18c2-2 4-3 5-3s3 1 5 3M12 21v-3"/></svg>
-        <h4>热像仪</h4>
-        <p>Fluke Ti 系列红外热像仪，电气接点、设备温升、暖通巡检。</p>
-      </div>
-      <div class="prod-cell">
-        <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 20L20 4M4 20h4M4 20v-4"/><circle cx="12" cy="12" r="3"/></svg>
-        <h4>校准器 / 过程仪表</h4>
-        <p>多功能过程校准器、压力校准、温度校准，计量与仪表车间配套。</p>
-      </div>
-      <div class="prod-cell">
-        <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 3v18M5 8l7-5 7 5M5 16l7 5 7-5"/></svg>
-        <h4>绝缘 / 安规测试</h4>
-        <p>绝缘电阻测试仪、接地电阻、安规分析仪，出厂检验与定期点检。</p>
-      </div>
-    </div>
-  </section>
-
-  <div class="brand-strip">
-    <h3>代理 / 分销品牌：<span>Fluke 福禄克</span> 为主，多品牌配套</h3>
-    <div class="brand-list">
-      <div class="brand-chip">Fluke 福禄克</div>
-      <div class="brand-chip">Keysight 是德科技</div>
-      <div class="brand-chip">Tektronix 泰克</div>
-      <div class="brand-chip">UNI-T 优利德</div>
-      <div class="brand-chip">GW Instek 固纬</div>
-      <div class="brand-chip">Hioki 日置</div>
+  <!-- 顶部热线 -->
+  <div class="hotline-bar">
+    <div class="hotline-inner">
+      <span class="hl-label">销售热线</span>
+      <span class="hl-num">180-1857-9934</span>
     </div>
   </div>
 
-  <section>
-    <div class="sec-head">
-      <div class="kicker">SERVICE · 我们怎么服务</div>
-      <h2>买仪器不是一锤子买卖</h2>
+  <!-- Banner -->
+  <div class="fanren-banner">
+    <div class="fb-text">
+      <div class="fb-tag">工业科研检测仪器 · 综合供应商</div>
+      <h1>福禄克 · 飞础科 · 徕卡 · 岛津<br>多品牌仪器一站式选型</h1>
+      <ul class="fb-points">
+        <li>红外热像、声学成像、显微镜、材料分析、力学测试全覆盖</li>
+        <li>正规渠道，原厂保修，支持官网验真</li>
+        <li>不确定型号？说应用场景，我们帮你配</li>
+      </ul>
     </div>
-    <div class="svc-list">
-      <div class="svc-item"><div class="no">01</div><h4>正品行货</h4><p>走正规渠道，带原厂保修卡与序列号，支持官网验真。</p></div>
-      <div class="svc-item"><div class="no">02</div><h4>选型支持</h4><p>说清楚你测什么参数、什么预算，我们帮你挑型号，不盲目推贵的。</p></div>
-      <div class="svc-item"><div class="no">03</div><h4>售后校准</h4><p>保修期内对接原厂售后，到期校准与维修渠道一并提供。</p></div>
+    <svg class="fb-chip-art" viewBox="0 0 200 200" fill="none">
+      <rect x="45" y="60" width="70" height="50" rx="6" fill="#1e5bb8"/>
+      <rect x="120" y="80" width="45" height="35" rx="4" fill="#d4b483"/>
+      <circle cx="60" cy="140" r="14" fill="none" stroke="#1e5bb8" stroke-width="4"/>
+      <circle cx="100" cy="150" r="10" fill="none" stroke="#1e5bb8" stroke-width="4"/>
+      <circle cx="140" cy="145" r="12" fill="none" stroke="#1e5bb8" stroke-width="4"/>
+      <path d="M55 75h50M55 88h35M55 101h45" stroke="#fff" stroke-width="3"/>
+      <path d="M128 90h30M128 100h20" stroke="#14181f" stroke-width="2.5"/>
+    </svg>
+  </div>
+
+  <!-- 产品中心：左分类 + 右产品 -->
+  <section class="fr-section">
+    <div class="fr-sec-head">
+      <div class="fr-title">产品中心</div>
+      <div class="fr-sub">PRODUCT</div>
+    </div>
+    <div class="fr-prod-wrap">
+      <div class="fr-side">
+        <div class="side-tit">仪器分类</div>
+        <div class="side-item active">全部产品</div>
+        <div class="side-item">红外热成像</div>
+        <div class="side-item">声学成像</div>
+        <div class="side-item">显微观察系统</div>
+        <div class="side-item">力学性能测试</div>
+        <div class="side-item">材料成分分析</div>
+        <div class="side-item">高分子测试</div>
+        <div class="side-item">半导体 / PCB</div>
+        <div class="side-item">局放 / 环境监测</div>
+      </div>
+      <div class="fr-main">
+        <div class="more"><a href="javascript:void(0)">查看更多 +</a></div>
+        <div class="fr-prod-grid" style="margin-top:0">
+          <div class="fr-prod">
+            <svg class="pf-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 3a9 9 0 019 9M12 3a9 9 0 00-9 9M12 3v6M7 18c2-2 4-3 5-3s3 1 5 3M12 21v-3"/></svg>
+            <h4>红外热像仪</h4>
+            <p>FOTRIC 2810 / 348L、Fluke Ti480U / TiX1060、巨哥 MAG-F6，测温范围 -40~2000℃。</p>
+            <span class="pf-more">查看型号 →</span>
+          </div>
+          <div class="fr-prod">
+            <svg class="pf-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 12h4l2-6 4 12 2-6h6"/></svg>
+            <h4>声学成像仪</h4>
+            <p>Fluke ii1020C、FOTRIC AC60，气体泄漏、局部放电、气密性检测。</p>
+            <span class="pf-more">查看型号 →</span>
+          </div>
+          <div class="fr-prod">
+            <svg class="pf-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="4" y="9" width="16" height="11" rx="1"/><path d="M12 9V4M8 4h8"/></svg>
+            <h4>显微镜系统</h4>
+            <p>徕卡 DM4M / DM18M 金相显微镜、JEOL 扫描电镜、体视 / 数码显微镜。</p>
+            <span class="pf-more">查看型号 →</span>
+          </div>
+          <div class="fr-prod">
+            <svg class="pf-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 20V8M12 20V4M19 20v-9"/><path d="M3 20h18"/></svg>
+            <h4>万能 / 疲劳试验机</h4>
+            <p>岛津 AGX-V / AG-X 万能试验机、EHF 电液伺服疲劳机、高低温拉伸。</p>
+            <span class="pf-more">查看型号 →</span>
+          </div>
+          <div class="fr-prod">
+            <svg class="pf-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="11" cy="11" r="7"/><path d="M16 16l5 5"/></svg>
+            <h4>光谱 / 元素分析</h4>
+            <p>岛津 XRD-7000、EDX 荧光光谱、Agilent ICP-OES、NITON XL3T 手持合金分析。</p>
+            <span class="pf-more">查看型号 →</span>
+          </div>
+          <div class="fr-prod">
+            <svg class="pf-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 12c3-6 6 6 9 0s6 6 9 0"/></svg>
+            <h4>热分析 / 流变仪</h4>
+            <p>梅特勒 DSC / TGA / DMA、安东帕 MCR 旋转流变仪、熔融指数仪、硫化仪。</p>
+            <span class="pf-more">查看型号 →</span>
+          </div>
+          <div class="fr-prod">
+            <svg class="pf-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="5" y="5" width="14" height="14" rx="2"/><path d="M9 9h6v6H9z"/></svg>
+            <h4>半导体 / PCB 检测</h4>
+            <p>高倍金相显微镜、台阶仪、膜厚仪、椭偏仪、EDS 能谱分析。</p>
+            <span class="pf-more">查看型号 →</span>
+          </div>
+          <div class="fr-prod">
+            <svg class="pf-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M13 2L4 14h6l-1 8 9-12h-6l1-8z"/></svg>
+            <h4>局放 / 环境监测</h4>
+            <p>多功能局放检测定位仪、高压巡检仪、手持 / 在线尘埃粒子计数器。</p>
+            <span class="pf-more">查看型号 →</span>
+          </div>
+          <div class="fr-prod">
+            <svg class="pf-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6 3h12v6a6 6 0 01-12 0V3z"/><path d="M12 15v6M8 21h8"/></svg>
+            <h4>老化试验箱</h4>
+            <p>氙灯老化箱、UV 紫外老化、臭氧老化、热老化烘箱，可靠性测试配套。</p>
+            <span class="pf-more">查看型号 →</span>
+          </div>
+        </div>
+      </div>
     </div>
   </section>
 
-  <section id="contact">
-    <h2>报型号询价，或告诉我们你要测什么</h2>
-    <p>不确定选哪款也没关系，把应用场景描述一下，我们给你推荐型号。</p>
-    <div class="contact-grid">
-      <div class="c-item"><div class="lbl">业务</div><div class="val">婉婉科技 · 仪器销售（待补充联系方式）</div></div>
-      <div class="c-item"><div class="lbl">LOCATION</div><div class="val">江苏 · 苏州</div></div>
-      <div class="c-item"><div class="lbl">HOURS</div><div class="val">周一至周六 9:00 – 18:00</div></div>
+  <!-- 代理品牌 -->
+  <div class="fr-about" style="padding-top:60px;padding-bottom:60px">
+    <div class="fr-sec-head" style="margin-bottom:0">
+      <div class="fr-title">代理 / 合作品牌</div>
+      <div class="fr-sub">BRANDS</div>
+    </div>
+    <div style="display:flex;flex-wrap:wrap;gap:10px;margin-top:30px">
+      <span class="fr-cat" style="cursor:default">Fluke 福禄克</span>
+      <span class="fr-cat" style="cursor:default">FOTRIC 飞础科</span>
+      <span class="fr-cat" style="cursor:default">Leica 徕卡</span>
+      <span class="fr-cat" style="cursor:default">Shimadzu 岛津</span>
+      <span class="fr-cat" style="cursor:default">Anton Paar 安东帕</span>
+      <span class="fr-cat" style="cursor:default">Thermo Fisher 赛默飞</span>
+      <span class="fr-cat" style="cursor:default">JEOL 日本电子</span>
+      <span class="fr-cat" style="cursor:default">Mettler Toledo 梅特勒</span>
+      <span class="fr-cat" style="cursor:default">Agilent 安捷伦</span>
+      <span class="fr-cat" style="cursor:default">Hitachi 日立</span>
+      <span class="fr-cat" style="cursor:default">Zeiss 蔡司</span>
+      <span class="fr-cat" style="cursor:default">Bruker 布鲁克</span>
+      <span class="fr-cat" style="cursor:default">Mitutoyo 三丰</span>
+      <span class="fr-cat" style="cursor:default">Olympus 奥林巴斯</span>
+      <span class="fr-cat" style="cursor:default">Hioki 日置</span>
+      <span class="fr-cat" style="cursor:default">Keysight 是德</span>
+      <span class="fr-cat" style="cursor:default">Tektronix 泰克</span>
+      <span class="fr-cat" style="cursor:default">Leco 力可</span>
+    </div>
+  </div>
+
+  <!-- 关于我们 -->
+  <section class="fr-about">
+    <div class="fr-sec-head" style="margin-bottom:0">
+      <div class="fr-title">我们的服务</div>
+      <div class="fr-sub">SERVICE</div>
+    </div>
+    <div class="fr-about-grid">
+      <div class="fr-about-item">
+        <svg class="ab-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 2l3 6 6 1-4.5 4 1 6-5.5-3-5.5 3 1-6L3 9l6-1z"/></svg>
+        <h4>正品行货</h4>
+        <p>走正规授权渠道，带原厂序列号与保修卡，支持官网验真，杜绝水货翻新。</p>
+      </div>
+      <div class="fr-about-item">
+        <svg class="ab-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20c.8-3.5 3.5-5.5 6.5-5.5s5.7 2 6.5 5.5"/><circle cx="17" cy="9" r="2.5"/></svg>
+        <h4>选型支持</h4>
+        <p>说清楚测什么参数、什么预算、应用场景，我们帮你在多品牌间挑最合适的型号。</p>
+      </div>
+      <div class="fr-about-item">
+        <svg class="ab-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 13h4l2-7 4 14 2-7h4"/></svg>
+        <h4>售后校准</h4>
+        <p>保修期内对接原厂售后，到期校准、维修、耗材更换渠道一并提供。</p>
+      </div>
+      <div class="fr-about-item">
+        <svg class="ab-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 21h18M5 21V8l7-5 7 5v13"/></svg>
+        <h4>行业覆盖</h4>
+        <p>教育科研、医疗、电子制造、新能源、锂电、汽车、钢铁冶金、石化、半导体、食品饮料。</p>
+      </div>
     </div>
   </section>
+
+  <!-- 资讯中心 -->
+  <section class="fr-news">
+    <div class="fr-sec-head" style="margin-bottom:0">
+      <div class="fr-title">资讯中心</div>
+      <div class="fr-sub">NEWS</div>
+    </div>
+    <div class="fr-news-wrap">
+      <div class="fr-news-col">
+        <div class="news-col-tit">公司动态<small>COMPANY NEWS</small></div>
+        <div class="news-item">
+          <div class="date"><div class="d">10</div><div class="m">2026-09</div></div>
+          <div>
+            <div class="nt">婉婉科技新增 FOTRIC 专家级热像仪样机，欢迎预约测试</div>
+            <div class="ns">2810 / 348L 样机到位，可现场测温升、测泄漏。</div>
+          </div>
+        </div>
+        <div class="news-item">
+          <div class="date"><div class="d">22</div><div class="m">2026-07</div></div>
+          <div>
+            <div class="nt">配合高校实验室采购，提供整机 + 培训 + 校准方案</div>
+            <div class="ns">显微镜、力学试验机、热分析整套打包报价。</div>
+          </div>
+        </div>
+      </div>
+      <div class="fr-news-col">
+        <div class="news-col-tit">行业动态<small>INDUSTRY NEWS</small></div>
+        <div class="news-line">·  红外热成像在设备预测性维护中的应用要点</div>
+        <div class="news-line">·  局放检测：声学成像 vs 超声巡检仪怎么选</div>
+        <div class="news-line">·  材料实验室万能试验机选型与载荷量程匹配</div>
+        <div class="news-line">·  氙灯老化箱与 UV 老化箱的适用场景区别</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 联系我们 -->
+  <div class="fr-contact">
+    <div class="fr-title">联系我们</div>
+    <div class="fr-sub" style="font-size:12px;letter-spacing:6px;color:var(--b2b);margin:6px 0 10px">CONTACT</div>
+    <div class="big-phone">180-1857-9934</div>
+    <div class="fr-sub-info">
+      业务：婉婉科技 · 工业测量仪器仪表销售<br>
+      地址：江苏 · 苏州　|　工作时间：周一至周六 9:00 – 18:00
+    </div>
+  </div>
 </div>
 
 <footer>
