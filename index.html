@@ -259,6 +259,41 @@
   @media(max-width:560px){
     .fr-about-grid{grid-template-columns:1fr}
   }
+
+  /* ===== 型号弹窗 ===== */
+  .modal-mask{
+    position:fixed;inset:0;background:rgba(10,14,22,.6);z-index:200;
+    display:none;align-items:center;justify-content:center;padding:20px;
+  }
+  .modal-mask.show{display:flex}
+  .modal-box{
+    background:#fff;border-radius:10px;max-width:560px;width:100%;
+    max-height:85vh;overflow-y:auto;box-shadow:0 24px 60px rgba(0,0,0,.25);
+  }
+  .modal-head{
+    padding:20px 26px;border-bottom:1px solid var(--b2b-line);
+    display:flex;justify-content:space-between;align-items:center;
+    position:sticky;top:0;background:#fff;border-radius:10px 10px 0 0;
+  }
+  .modal-head h3{font-size:18px;color:#1a2a4a;font-family:"Noto Serif SC",serif}
+  .modal-close{
+    width:32px;height:32px;border:none;background:var(--b2b-bg);cursor:pointer;
+    font-size:18px;color:#5a6a85;border-radius:6px;line-height:1;
+  }
+  .modal-close:hover{background:var(--b2b);color:#fff}
+  .modal-body{padding:20px 26px}
+  .modal-body .m-desc{font-size:13px;color:var(--muted);margin-bottom:14px;line-height:1.6}
+  .modal-body ul{list-style:none}
+  .modal-body ul li{
+    padding:9px 0;border-bottom:1px dashed var(--b2b-line);
+    font-size:14px;color:#2a3a5a;display:flex;justify-content:space-between;gap:10px;
+  }
+  .modal-body ul li .m-note{color:var(--muted);font-size:12px;text-align:right}
+  .modal-foot{
+    padding:16px 26px;background:var(--b2b-bg);border-radius:0 0 10px 10px;
+    font-size:14px;color:#1a2a4a;
+  }
+  .modal-foot b{color:var(--b2b);font-size:18px;letter-spacing:1px}
 </style>
 </head>
 <body>
@@ -727,6 +762,21 @@
   </div>
 </div>
 
+<!-- 型号弹窗 -->
+<div class="modal-mask" id="modalMask" onclick="if(event.target===this)closeModal()">
+  <div class="modal-box">
+    <div class="modal-head">
+      <h3 id="modalTitle">型号清单</h3>
+      <button class="modal-close" onclick="closeModal()">×</button>
+    </div>
+    <div class="modal-body">
+      <div class="m-desc" id="modalDesc"></div>
+      <ul id="modalList"></ul>
+    </div>
+    <div class="modal-foot" id="modalFoot"></div>
+  </div>
+</div>
+
 <footer>
   <div>© 凡人商贸 · 婉婉科技</div>
   <div>FANREN × WANWAN · SUZHOU</div>
@@ -744,6 +794,322 @@
   (function(){
     var h = (location.hash||'').replace('#','');
     if(h==='fanren'||h==='wanwan'){ go(h); }
+  })();
+
+  /* ===== 型号弹窗数据 ===== */
+  var CATALOG = {
+    '运算放大器 OPA':{
+      desc:'TI 模拟器件主力料号，常备库存，小批量当天发。',
+      models:[
+        ['OPA2333','零漂移 CMOS 运放，双通道'],
+        ['OPA2188','36V 零漂移运放'],
+        ['OPA192','36V 高精密运放'],
+        ['OPA827','低噪声精密运放'],
+        ['THS4011','高速电压反馈运放'],
+        ['LMV358','低电压轨到轨运放']
+      ],
+      phone:'400-000-0000'
+    },
+    'DC-DC 电源芯片':{
+      desc:'工业与消费类供电方案常用料号。',
+      models:[
+        ['LM2596','3A 降压开关稳压器'],
+        ['TPS5430','3A 降压 DC-DC'],
+        ['BQ24072','电池管理 / 充电'],
+        ['TLV70033','LDO 低压差'],
+        ['LM317','可调三端稳压'],
+        ['TPS61023','升压转换器']
+      ],
+      phone:'400-000-0000'
+    },
+    'MSP430 MCU':{
+      desc:'超低功耗微控制器，按项目批次供货。',
+      models:[
+        ['MSP430G2553','LaunchPad 常用'],
+        ['MSP430FR5994','FRAM 系列'],
+        ['MSP430F149','经典 16 位'],
+        ['MSP430I2041','高精度模拟前端']
+      ],
+      phone:'400-000-0000'
+    },
+    'RS-485 / CAN 接口':{
+      desc:'工业通信收发器与数字隔离。',
+      models:[
+        ['MAX485','RS-485 收发器'],
+        ['SN65HVD230','CAN 收发器'],
+        ['ISO3082','隔离 RS-485'],
+        ['ADM2483','磁隔离 RS-485'],
+        ['TL16C550C','串口扩展']
+      ],
+      phone:'400-000-0000'
+    },
+    '温度 / 电流传感器':{
+      desc:'面向工业现场与仪器板卡配套。',
+      models:[
+        ['PT100 / PT1000','铂电阻温度'],
+        ['LM35','模拟温度传感器'],
+        ['INA219','I2C 电流/功率监测'],
+        ['ACS712','霍尔电流传感器'],
+        ['Honeywell 压力','压阻式压力']
+      ],
+      phone:'400-000-0000'
+    },
+    '74 系列逻辑件':{
+      desc:'电平转换、模拟开关，BOM 缺料当日补。',
+      models:[
+        ['74HC138','3-8 译码器'],
+        ['74LVC245','8 路总线收发'],
+        ['TXS0108E','8 位双向电平转换'],
+        ['CD4051','模拟多路开关'],
+        ['SN74HC595','串入并出']
+      ],
+      phone:'400-000-0000'
+    },
+    '红外热像仪':{
+      desc:'测温范围 -40℃ ~ +2000℃，覆盖手持、在线、科研、高温炉口多场景。',
+      models:[
+        ['FOTRIC 2810','专家级科研热像仪，1280×1024'],
+        ['FOTRIC 348L','手持热像仪，640×480，-20~650℃'],
+        ['FOTRIC 248M','研发台式热像仪，30Hz 全辐射流'],
+        ['FLUKE TiX1060','福禄克大师级，1024×768，30Hz'],
+        ['FLUKE Ti480U','手持高清，640×480，60Hz'],
+        ['FLUKE RSE60','在线式，1.8Mbps 视频输出'],
+        ['巨哥 HT90 TD2500','高温型，可穿透玻璃窗口测温'],
+        ['巨哥 MAG-F6','科学级，0~500℃ 精度 0.7℃'],
+        ['艾睿 G600','气体热成像，SF6/氨气等检测']
+      ],
+      phone:'180-1857-9934'
+    },
+    '声学成像仪':{
+      desc:'阵列声波定位，用于气体泄漏、局部放电、气密性检测。',
+      models:[
+        ['FLUKE ii1020C','气体泄漏 + PDQ 局放检测二合一'],
+        ['FOTRIC AC60','162 麦克风阵列，154 螺旋阵']
+      ],
+      phone:'180-1857-9934'
+    },
+    '显微镜系统':{
+      desc:'光学金相显微镜、体视、数码、扫描电镜全系列。',
+      models:[
+        ['LEICA DM4M','研究级半自动正置金相'],
+        ['LEICA DM18M/C/A','倒置金相显微镜'],
+        ['LEICA DCM8','光学表面测量，0.1nm 纵向'],
+        ['LEICA DVM6','超景深视频显微镜'],
+        ['LEICA DMS1000','数码显微镜'],
+        ['LEICA S8 APO','体视显微镜'],
+        ['JEOL JSM-7610F Plus','场发射扫描电镜 FE-SEM'],
+        ['JEOL JSM-IT200','钨灯丝扫描电镜'],
+        ['JEOL JCM-7000','台式扫描电镜'],
+        ['Thermo QUATTRO ESEM','环境扫描电镜'],
+        ['Thermo APREO','高分辨扫描电镜'],
+        ['Thermo SCIOS 2','FIB-SEM 双束系统']
+      ],
+      phone:'180-1857-9934'
+    },
+    '万能 / 疲劳试验机':{
+      desc:'拉伸、压缩、弯曲、疲劳、高低温、冲击、蠕变全力学覆盖。',
+      models:[
+        ['岛津 AGX-V','电子万能试验机，10~600kN'],
+        ['岛津 AG-X','电子万能，10~300kN'],
+        ['岛津 AGS-X','高低温拉伸，-196~+700℃'],
+        ['岛津 UH-FX 2000KN','大载荷液压万能'],
+        ['岛津 MMT','微力电磁疲劳试验机'],
+        ['岛津 EHF','电液伺服疲劳机，1~300kN'],
+        ['岛津 USF-2000','超声波疲劳试验机'],
+        ['Anton Paar 纳米压痕仪','薄膜硬度/弹性模量'],
+        ['Anton Paar 划痕仪','涂层结合力'],
+        ['Anton Paar 摩擦磨损试验机','摩擦系数/磨损率']
+      ],
+      phone:'180-1857-9934'
+    },
+    '光谱 / 元素分析':{
+      desc:'金属、合金、高纯材料成分与物相分析。',
+      models:[
+        ['岛津 EPMA-8050G','电子探针显微分析仪'],
+        ['岛津 XRD-7000','X 射线衍射仪'],
+        ['岛津 EDX7000','X 射线荧光光谱'],
+        ['Agilent 5110 ICP-OES','电感耦合等离子发射'],
+        ['Agilent AA 240','原子吸收光谱'],
+        ['Thermo ARL 8860','直读光谱仪'],
+        ['NITON XL3T','手持合金分析仪'],
+        ['HITACHI PMI-MASTER PRO2','移动式直读光谱'],
+        ['LECO TCH-600','氧氮氢分析仪'],
+        ['LECO CS-230','碳硫分析仪']
+      ],
+      phone:'180-1857-9934'
+    },
+    '热分析 / 流变仪':{
+      desc:'高分子材料物性、流变、热性能、老化测试。',
+      models:[
+        ['Mettler Toledo DMA','动态热机械分析仪'],
+        ['Mettler Toledo TMA','热机械分析仪'],
+        ['Mettler Toledo DSC','差示扫描量热'],
+        ['Mettler Toledo TGA','热重分析仪'],
+        ['Anton Paar MCR','高级旋转流变仪'],
+        ['CFT-500EX','毛细管流变仪'],
+        ['MP1200P','熔融指数测定仪'],
+        ['MooneyCheck Profile','无转子硫化仪'],
+        ['RHEOCHECK MD','门尼粘度计']
+      ],
+      phone:'180-1857-9934'
+    },
+    '半导体 / PCB 检测':{
+      desc:'晶圆、封装、PCB 失效分析与尺寸测量。',
+      models:[
+        ['LEICA DM2700','高倍金相显微镜'],
+        ['LEICA DM8000/DM12000','检查显微镜'],
+        ['D600','台阶仪，2D/3D 轮廓'],
+        ['DCM8','光学轮廓仪'],
+        ['F50','光谱反射膜厚仪'],
+        ['PROFORMA 300I','硅片测厚/翘曲'],
+        ['FILM SENSE','椭偏仪'],
+        ['STM-7','测量显微镜'],
+        ['JED-2300F','EDS 能谱仪']
+      ],
+      phone:'180-1857-9934'
+    },
+    '局放 / 环境监测':{
+      desc:'高压局放定位与洁净环境粒子监测。',
+      models:[
+        ['多功能局放检测定位仪','开关柜/电缆局放定位'],
+        ['高压局部放电巡检仪','手持巡检'],
+        ['手持尘埃粒子计数器','洁净室现场检测'],
+        ['在线式尘埃粒子计数器','环境实时监测']
+      ],
+      phone:'180-1857-9934'
+    },
+    '老化试验箱':{
+      desc:'高分子/涂层耐环境可靠性测试。',
+      models:[
+        ['ATLAS Ci3000+','氙灯老化试验箱'],
+        ['ATLAS UV-TEST','紫外老化试验箱'],
+        ['GIBITRE OZONE CHECK','臭氧老化试验箱'],
+        ['BINDER FED55','热老化烘箱']
+      ],
+      phone:'180-1857-9934'
+    }
+  };
+
+  function showModal(title){
+    var data = CATALOG[title];
+    if(!data){
+      document.getElementById('modalTitle').textContent = title;
+      document.getElementById('modalDesc').textContent = '具体型号清单请电话咨询，我们根据您的应用场景推荐。';
+      document.getElementById('modalList').innerHTML = '';
+      document.getElementById('modalFoot').innerHTML = '询价电话：<b>180-1857-9934</b>';
+    }else{
+      document.getElementById('modalTitle').textContent = title;
+      document.getElementById('modalDesc').textContent = data.desc;
+      var html = '';
+      data.models.forEach(function(m){
+        html += '<li><span>'+m[0]+'</span><span class="m-note">'+m[1]+'</span></li>';
+      });
+      document.getElementById('modalList').innerHTML = html;
+      document.getElementById('modalFoot').innerHTML = '以上为常见型号，批量/特殊规格询价电话：<b>'+data.phone+'</b>';
+    }
+    document.getElementById('modalMask').classList.add('show');
+  }
+  function closeModal(){
+    document.getElementById('modalMask').classList.remove('show');
+  }
+
+  document.querySelectorAll('.fr-prod').forEach(function(card){
+    var more = card.querySelector('.pf-more');
+    if(!more) return;
+    more.style.cursor='pointer';
+    more.addEventListener('click', function(){
+      var h4 = card.querySelector('h4');
+      if(h4) showModal(h4.textContent.trim());
+    });
+  });
+
+  /* ===== 背景粒子：鼠标聚集特效 ===== */
+  (function(){
+    var canvas = document.createElement('canvas');
+    canvas.style.cssText = 'position:fixed;inset:0;z-index:9999;pointer-events:none;';
+    document.body.appendChild(canvas);
+    var ctx = canvas.getContext('2d');
+    var W, H, pts = [];
+    var mouse = {x:null, y:null, r:160};
+
+    function resize(){
+      W = canvas.width = window.innerWidth;
+      H = canvas.height = window.innerHeight;
+    }
+    window.addEventListener('resize', resize);
+    resize();
+
+    var N = Math.min(110, Math.max(50, Math.floor(W*H/14000)));
+    for(var i=0;i<N;i++){
+      pts.push({
+        x:Math.random()*W, y:Math.random()*H,
+        vx:(Math.random()-.5)*.35, vy:(Math.random()-.5)*.35,
+        r:Math.random()*1.6+1,
+        gold:Math.random()>.4
+      });
+    }
+
+    window.addEventListener('mousemove', function(e){
+      mouse.x = e.clientX; mouse.y = e.clientY;
+    });
+    window.addEventListener('mouseleave', function(){
+      mouse.x = null; mouse.y = null;
+    });
+
+    function tick(){
+      ctx.clearRect(0,0,W,H);
+
+      // 鼠标光晕
+      if(mouse.x!==null){
+        var g = ctx.createRadialGradient(mouse.x,mouse.y,0,mouse.x,mouse.y,mouse.r);
+        g.addColorStop(0,'rgba(184,137,74,.12)');
+        g.addColorStop(1,'rgba(184,137,74,0)');
+        ctx.fillStyle = g;
+        ctx.beginPath();
+        ctx.arc(mouse.x,mouse.y,mouse.r,0,Math.PI*2);
+        ctx.fill();
+      }
+
+      pts.forEach(function(p){
+        if(mouse.x!==null){
+          var dx = mouse.x - p.x, dy = mouse.y - p.y;
+          var d = Math.hypot(dx,dy);
+          if(d < mouse.r && d > 0){
+            var f = (mouse.r - d)/mouse.r * .06;
+            p.vx += dx/d*f;
+            p.vy += dy/d*f;
+          }
+        }
+        p.x += p.vx; p.y += p.vy;
+        p.vx *= .98; p.vy *= .98;
+        if(Math.abs(p.vx) < .04) p.vx += (Math.random()-.5)*.02;
+        if(Math.abs(p.vy) < .04) p.vy += (Math.random()-.5)*.02;
+        if(p.x<0)p.x=W; if(p.x>W)p.x=0;
+        if(p.y<0)p.y=H; if(p.y>H)p.y=0;
+
+        ctx.beginPath();
+        ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
+        ctx.fillStyle = p.gold ? 'rgba(184,137,74,.55)' : 'rgba(30,91,184,.4)';
+        ctx.fill();
+      });
+
+      // 邻近连线
+      for(var i=0;i<pts.length;i++){
+        for(var j=i+1;j<pts.length;j++){
+          var a=pts[i], b=pts[j];
+          var d=Math.hypot(a.x-b.x, a.y-b.y);
+          if(d<120){
+            ctx.beginPath();
+            ctx.moveTo(a.x,a.y); ctx.lineTo(b.x,b.y);
+            ctx.strokeStyle = 'rgba(184,137,74,'+((1-d/120)*.18)+')';
+            ctx.lineWidth = .6;
+            ctx.stroke();
+          }
+        }
+      }
+      requestAnimationFrame(tick);
+    }
+    tick();
   })();
 </script>
 
