@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>凡人商贸 × 婉婉科技</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='18' fill='%2314181f'/%3E%3Ctext x='50' y='68' font-size='52' text-anchor='middle' fill='%23b8894a' font-family='serif' font-weight='bold'%3E凡%3C/text%3E%3C/svg%3E">
+<link rel="stylesheet" href="https://miaoda.feishu.cn/fonts/css2?family=Noto+Serif+SC:wght@400;600;700;900&family=Noto+Sans+SC:wght@300;400;500;700&display=swap">
+<style>
+  :root{
+    --ink:#14181f;
+    --ink-2:#1f2530;
+    --paper:#f6f3ee;
+    --paper-2:#efe9df;
+    --gold:#b8894a;
+    --gold-soft:#d4b483;
+    --cinnabar:#9e3b3b;
+    --line:#d9d2c4;
+    --text:#2a2d34;
+    --muted:#6b6f78;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    font-family:"Noto Sans SC",-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif;
+    background:var(--paper);color:var(--text);line-height:1.7;
+    -webkit-font-smoothing:antialiased;
+  }
+  h1,h2,h3,.serif{font-family:"Noto Serif SC","Songti SC",serif}
+
+  /* ===== 导航 ===== */
+  nav{
+    position:fixed;top:0;left:0;right:0;z-index:100;
+    display:flex;align-items:center;justify-content:space-between;
+    padding:18px 48px;
+    background:rgba(20,24,31,.85);backdrop-filter:blur(12px);
+    border-bottom:1px solid rgba(217,210,196,.12);
+  }
+  .brand{display:flex;align-items:center;gap:12px;color:#f6f3ee;text-decoration:none}
+  .brand-mark{
+    width:38px;height:38px;border-radius:9px;
+    background:linear-gradient(135deg,var(--gold),var(--gold-soft));
+    display:grid;place-items:center;
+    font-family:"Noto Serif SC",serif;font-weight:700;color:#14181f;font-size:20px;
+  }
+  .brand-name{font-family:"Noto Serif SC",serif;font-size:17px;letter-spacing:2px}
+  .brand-name small{display:block;font-size:10px;letter-spacing:3px;color:var(--gold-soft);font-family:"Noto Sans SC",sans-serif}
+  .nav-links{display:flex;gap:36px}
+  .nav-links a{color:#cfd2d8;text-decoration:none;font-size:14px;letter-spacing:1px;transition:color .2s}
+  .nav-links a:hover{color:var(--gold-soft)}
+  @media(max-width:768px){nav{padding:14px 20px}.nav-links{display:none}}
+
+  /* ===== Hero ===== */
+  header.hero{
+    min-height:100vh;display:flex;flex-direction:column;justify-content:center;
+    padding:120px 48px 80px;
+    background:
+      radial-gradient(1200px 600px at 80% -10%, rgba(184,137,74,.18), transparent 60%),
+      radial-gradient(900px 500px at 10% 110%, rgba(158,59,59,.12), transparent 60%),
+      var(--ink);
+    color:#f6f3ee;position:relative;overflow:hidden;
+  }
+  .hero-tag{
+    display:inline-flex;align-items:center;gap:10px;
+    font-size:13px;letter-spacing:4px;color:var(--gold-soft);
+    margin-bottom:28px;
+  }
+  .hero-tag::before{content:"";width:36px;height:1px;background:var(--gold)}
+  .hero h1{
+    font-size:clamp(40px,7vw,84px);line-height:1.15;font-weight:900;
+    letter-spacing:2px;margin-bottom:24px;
+  }
+  .hero h1 .x{color:var(--gold);font-weight:400;margin:0 12px}
+  .hero p.lead{
+    max-width:640px;font-size:17px;color:#b8bcc4;font-weight:300;
+    margin-bottom:48px;
+  }
+  .hero-actions{display:flex;gap:16px;flex-wrap:wrap}
+  .btn{
+    display:inline-block;padding:14px 32px;font-size:14px;letter-spacing:2px;
+    text-decoration:none;transition:all .25s;cursor:pointer;border:1px solid transparent;
+  }
+  .btn-solid{background:var(--gold);color:#14181f;font-weight:500}
+  .btn-solid:hover{background:var(--gold-soft)}
+  .btn-ghost{border-color:#4a5060;color:#e8e4dc}
+  .btn-ghost:hover{border-color:var(--gold);color:var(--gold-soft)}
+  .hero-meta{
+    margin-top:80px;display:flex;gap:56px;flex-wrap:wrap;
+    padding-top:32px;border-top:1px solid rgba(217,210,196,.15);
+  }
+  .hero-meta .item .num{font-family:"Noto Serif SC",serif;font-size:30px;color:var(--gold-soft)}
+  .hero-meta .item .lbl{font-size:12px;color:#8a8f99;letter-spacing:2px;margin-top:4px}
+  @media(max-width:768px){header.hero{padding:110px 24px 60px}.hero-meta{gap:28px}}
+
+  /* ===== 通用 section ===== */
+  section{padding:110px 48px}
+  .sec-head{max-width:760px;margin-bottom:64px}
+  .sec-head .kicker{font-size:13px;letter-spacing:4px;color:var(--gold);margin-bottom:14px}
+  .sec-head h2{font-size:clamp(28px,4vw,44px);font-weight:700;line-height:1.3}
+  .sec-head p{margin-top:18px;color:var(--muted);font-size:15px}
+  @media(max-width:768px){section{padding:70px 24px}}
+
+  /* ===== 双公司 ===== */
+  #companies{background:var(--paper)}
+  .company-grid{display:grid;grid-template-columns:1fr 1fr;gap:32px}
+  .company-card{
+    background:#fff;border:1px solid var(--line);padding:48px 40px;
+    position:relative;transition:transform .3s, box-shadow .3s;
+  }
+  .company-card:hover{transform:translateY(-4px);box-shadow:0 20px 50px rgba(20,24,31,.08)}
+  .company-card .mark{
+    width:56px;height:56px;border-radius:12px;display:grid;place-items:center;
+    font-family:"Noto Serif SC",serif;font-size:28px;font-weight:700;margin-bottom:24px;
+  }
+  .c-trade .mark{background:#eef0f3;color:var(--ink)}
+  .c-tech .mark{background:#f4e8d8;color:var(--gold)}
+  .company-card h3{font-size:26px;margin-bottom:6px}
+  .company-card .en{font-size:12px;letter-spacing:3px;color:var(--muted);margin-bottom:20px}
+  .company-card .desc{font-size:14.5px;color:#4a4e57;margin-bottom:28px}
+  .tag-row{display:flex;flex-wrap:wrap;gap:8px}
+  .tag{font-size:12px;padding:5px 12px;background:var(--paper-2);color:#5a5e68;letter-spacing:1px}
+  @media(max-width:860px){.company-grid{grid-template-columns:1fr}}
+
+  /* ===== 业务版图 ===== */
+  #business{background:var(--ink);color:#e8e4dc}
+  #business .sec-head h2{color:#f6f3ee}
+  #business .sec-head p{color:#9a9ea8}
+  .biz-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:#2a303c;border:1px solid #2a303c}
+  .biz-cell{background:var(--ink);padding:40px 32px;transition:background .3s}
+  .biz-cell:hover{background:var(--ink-2)}
+  .biz-cell .icon{width:44px;height:44px;margin-bottom:20px;color:var(--gold-soft)}
+  .biz-cell h4{font-family:"Noto Serif SC",serif;font-size:19px;margin-bottom:12px;color:#f6f3ee}
+  .biz-cell p{font-size:13.5px;color:#9a9ea8;line-height:1.7}
+  @media(max-width:1000px){.biz-grid{grid-template-columns:1fr 1fr}}
+  @media(max-width:560px){.biz-grid{grid-template-columns:1fr}}
+
+  /* ===== 优势 ===== */
+  #edge{background:var(--paper)}
+  .edge-list{display:grid;grid-template-columns:repeat(3,1fr);gap:32px}
+  .edge-item{padding-top:28px;border-top:2px solid var(--gold)}
+  .edge-item .no{font-family:"Noto Serif SC",serif;font-size:14px;color:var(--gold);letter-spacing:2px;margin-bottom:14px}
+  .edge-item h4{font-size:20px;margin-bottom:12px}
+  .edge-item p{font-size:14px;color:var(--muted)}
+  @media(max-width:860px){.edge-list{grid-template-columns:1fr}}
+
+  /* ===== 联系 ===== */
+  #contact{
+    background:
+      radial-gradient(800px 400px at 90% 20%, rgba(184,137,74,.15), transparent 60%),
+      var(--ink-2);color:#e8e4dc;padding:110px 48px;
+  }
+  #contact h2{font-size:clamp(28px,4vw,44px);margin-bottom:20px;color:#f6f3ee}
+  #contact p{color:#9a9ea8;max-width:560px;margin-bottom:40px}
+  .contact-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:32px;margin-top:20px}
+  .contact-grid .c-item .lbl{font-size:12px;letter-spacing:3px;color:var(--gold-soft);margin-bottom:8px}
+  .contact-grid .c-item .val{font-size:16px;color:#e8e4dc}
+  @media(max-width:768px){#contact{padding:70px 24px}.contact-grid{grid-template-columns:1fr;gap:24px}}
+
+  footer{
+    background:var(--ink);padding:28px 48px;
+    display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;
+    border-top:1px solid rgba(217,210,196,.1);
+    font-size:12px;color:#6b6f78;letter-spacing:1px;
+  }
+  @media(max-width:768px){footer{padding:24px}}
+</style>
+</head>
+<body>
+
+<nav>
+  <a class="brand" href="#top">
+    <div class="brand-mark">凡</div>
+    <div class="brand-name">凡人商贸 · 婉婉科技<small>FANREN × WANWAN</small></div>
+  </a>
+  <div class="nav-links">
+    <a href="#companies">关于</a>
+    <a href="#business">业务</a>
+    <a href="#edge">优势</a>
+    <a href="#contact">联系</a>
+  </div>
+</nav>
+
+<header class="hero" id="top">
+  <div class="hero-tag">TRADE · TECHNOLOGY · INTEGRATION</div>
+  <h1>凡人商贸<span class="x">×</span>婉婉科技</h1>
+  <p class="lead">
+    以商贸为根基，以科技为引擎。凡人商贸深耕商品流通与供应链服务，
+    婉婉科技聚焦智能装备与工业软件——两条线，一个方向：让传统生意长出技术的骨架。
+  </p>
+  <div class="hero-actions">
+    <a class="btn btn-solid" href="#companies">了解我们</a>
+    <a class="btn btn-ghost" href="#contact">商务合作</a>
+  </div>
+  <div class="hero-meta">
+    <div class="item"><div class="num">2</div><div class="lbl">协同主体</div></div>
+    <div class="item"><div class="num">4</div><div class="lbl">业务板块</div></div>
+    <div class="item"><div class="num">1</div><div class="lbl">苏州出发</div></div>
+  </div>
+</header>
+
+<section id="companies">
+  <div class="sec-head">
+    <div class="kicker">ABOUT · 双轮驱动</div>
+    <h2>两家公司，同一份做事的逻辑</h2>
+    <p>一家管货与渠道，一家管设备与代码。商贸赚周转的钱，科技赚效率的钱，互相喂饭，互相兜底。</p>
+  </div>
+  <div class="company-grid">
+    <div class="company-card c-trade">
+      <div class="mark">凡</div>
+      <h3>凡人商贸</h3>
+      <div class="en">FANREN TRADING CO.</div>
+      <p class="desc">
+        立足苏州，面向长三角的综合贸易服务主体。围绕工业耗材、仪器仪表与通用设备配件，
+        提供采购代寻、供应商比价、仓储中转与配送对账一体化服务。
+        不追求大而全，只把"买得到、买得稳、算得清"这三件事做扎实。
+      </p>
+      <div class="tag-row">
+        <span class="tag">工业耗材贸易</span>
+        <span class="tag">仪器仪表代理</span>
+        <span class="tag">供应链中转</span>
+        <span class="tag">采购比价</span>
+      </div>
+    </div>
+    <div class="company-card c-tech">
+      <div class="mark">婉</div>
+      <h3>婉婉科技</h3>
+      <div class="en">WANWAN TECH CO.</div>
+      <p class="desc">
+        面向制造现场的小型技术团队。做上位机软件、PLC 程序、HMI 画面与测试工装集成，
+        也承接小批量电子方案的原型开发。代码不堆花活，能稳定跑在客户车间里、
+        出了问题半小时内定位到原因，才算交付。
+      </p>
+      <div class="tag-row">
+        <span class="tag">上位机软件开发</span>
+        <span class="tag">PLC / HMI 集成</span>
+        <span class="tag">测试工装</span>
+        <span class="tag">工业自动化</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="business">
+  <div class="sec-head">
+    <div class="kicker">BUSINESS · 业务版图</div>
+    <h2>四块业务，串成一条链</h2>
+  </div>
+  <div class="biz-grid">
+    <div class="biz-cell">
+      <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 7h18l-2 12H5L3 7z"/><path d="M8 7V5a4 4 0 018 0v2"/></svg>
+      <h4>商品贸易</h4>
+      <p>工业耗材、仪表、配件的寻源与分销，配套比价与对账，让采购环节透明可查。</p>
+    </div>
+    <div class="biz-cell">
+      <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="4" width="18" height="12" rx="1"/><path d="M8 20h8M12 16v4"/></svg>
+      <h4>工业软件</h4>
+      <p>设备上位机、数据采集、报表与历史曲线，C# / WPF 技术栈，面向 Windows 现场机。</p>
+    </div>
+    <div class="biz-cell">
+      <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M5 5l2 2M17 17l2 2M19 5l-2 2M7 17l-2 2"/></svg>
+      <h4>自动化集成</h4>
+      <p>PLC 程序、模拟量闭环、PID 调试与 HMI 画面，从电气图到现场调通一条龙。</p>
+    </div>
+    <div class="biz-cell">
+      <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 2l9 5v10l-9 5-9-5V7l9-5z"/><path d="M12 22V12M3 7l9 5 9-5"/></svg>
+      <h4>方案协同</h4>
+      <p>贸易订单背后挂技术方案，技术项目配套耗材供应，两公司共用一个交付口径。</p>
+    </div>
+  </div>
+</section>
+
+<section id="edge">
+  <div class="sec-head">
+    <div class="kicker">WHY US · 我们的做事方式</div>
+    <h2>不画大饼，只认现场</h2>
+  </div>
+  <div class="edge-list">
+    <div class="edge-item">
+      <div class="no">01 / 小而快</div>
+      <h4>决策链条短</h4>
+      <p>没有层层汇报，价格、交期、改方案当天就能拍板。客户提的问题，群里当场回，不踢皮球。</p>
+    </div>
+    <div class="edge-item">
+      <div class="no">02 / 商技一体</div>
+      <h4>卖货也懂设备</h4>
+      <p>贸易同事能看懂参数表，技术同事能算清物料成本。客户面对的是一个人，不是两个部门。</p>
+    </div>
+    <div class="edge-item">
+      <div class="no">03 / 苏州立足</div>
+      <h4>就近响应</h4>
+      <p>同城客户半天到现场，长三角主要城市一天内覆盖。售后不靠远程电话，靠人到。</p>
+    </div>
+  </div>
+</section>
+
+<section id="contact">
+  <h2>想聊点什么？</h2>
+  <p>无论是一批耗材的询价，还是一台设备的改造需求，都可以先把问题扔过来。能做我们报价，做不了我们直说。</p>
+  <div class="contact-grid">
+    <div class="c-item">
+      <div class="lbl">BUSINESS</div>
+      <div class="val">商务合作 · 待补充</div>
+    </div>
+    <div class="c-item">
+      <div class="lbl">LOCATION</div>
+      <div class="val">江苏 · 苏州</div>
+    </div>
+    <div class="c-item">
+      <div class="lbl">HOURS</div>
+      <div class="val">周一至周六 9:00 – 18:00</div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div>© 凡人商贸 · 婉婉科技</div>
+  <div>FANREN × WANWAN · SUZHOU</div>
+</footer>
+
+</body>
+</html>
