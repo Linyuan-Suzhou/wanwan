@@ -1023,14 +1023,15 @@
     });
   });
 
-  /* ===== 背景粒子：鼠标聚集特效 ===== */
+  /* ===== 背景粒子：光晕呼吸 + 鼠标环绕 ===== */
   (function(){
     var canvas = document.createElement('canvas');
     canvas.style.cssText = 'position:fixed;inset:0;z-index:9999;pointer-events:none;';
     document.body.appendChild(canvas);
     var ctx = canvas.getContext('2d');
     var W, H, pts = [];
-    var mouse = {x:null, y:null, r:160};
+    var mouse = {x:null, y:null};
+    var time = 0;
 
     function resize(){
       W = canvas.width = window.innerWidth;
@@ -1039,13 +1040,15 @@
     window.addEventListener('resize', resize);
     resize();
 
-    var N = Math.min(110, Math.max(50, Math.floor(W*H/14000)));
+    var N = Math.min(90, Math.max(45, Math.floor(W*H/18000)));
     for(var i=0;i<N;i++){
       pts.push({
         x:Math.random()*W, y:Math.random()*H,
-        vx:(Math.random()-.5)*.35, vy:(Math.random()-.5)*.35,
-        r:Math.random()*1.6+1,
-        gold:Math.random()>.4
+        vx:(Math.random()-.5)*.3, vy:(Math.random()-.5)*.3,
+        baseR:Math.random()*2+1.2,
+        phase:Math.random()*Math.PI*2,
+        gold:Math.random()>.45,
+        near:0
       });
     }
 
@@ -1057,56 +1060,90 @@
     });
 
     function tick(){
+      time += .016;
       ctx.clearRect(0,0,W,H);
 
-      // 鼠标光晕
+      // 鼠标光晕（三层径向渐变）
       if(mouse.x!==null){
-        var g = ctx.createRadialGradient(mouse.x,mouse.y,0,mouse.x,mouse.y,mouse.r);
-        g.addColorStop(0,'rgba(184,137,74,.12)');
+        var g = ctx.createRadialGradient(mouse.x,mouse.y,0,mouse.x,mouse.y,200);
+        g.addColorStop(0,'rgba(212,180,131,.18)');
+        g.addColorStop(.4,'rgba(184,137,74,.06)');
         g.addColorStop(1,'rgba(184,137,74,0)');
         ctx.fillStyle = g;
         ctx.beginPath();
-        ctx.arc(mouse.x,mouse.y,mouse.r,0,Math.PI*2);
+        ctx.arc(mouse.x,mouse.y,200,0,Math.PI*2);
         ctx.fill();
+      }
+
+      // 连线：只在鼠标附近 220px 内动态生成
+      if(mouse.x!==null){
+        for(var i=0;i<pts.length;i++){
+          for(var j=i+1;j<pts.length;j++){
+            var a=pts[i], b=pts[j];
+            var d=Math.hypot(a.x-b.x, a.y-b.y);
+            var md=Math.min(
+              Math.hypot(a.x-mouse.x,a.y-mouse.y),
+              Math.hypot(b.x-mouse.x,b.y-mouse.y)
+            );
+            if(d<130 && md<220){
+              ctx.beginPath();
+              ctx.moveTo(a.x,a.y); ctx.lineTo(b.x,b.y);
+              ctx.strokeStyle = 'rgba(184,137,74,'+((1-d/130)*.25*(1-md/220))+')';
+              ctx.lineWidth = .5;
+              ctx.stroke();
+            }
+          }
+        }
       }
 
       pts.forEach(function(p){
-        if(mouse.x!==null){
-          var dx = mouse.x - p.x, dy = mouse.y - p.y;
-          var d = Math.hypot(dx,dy);
-          if(d < mouse.r && d > 0){
-            var f = (mouse.r - d)/mouse.r * .06;
-            p.vx += dx/d*f;
-            p.vy += dy/d*f;
-          }
+        var dx = mouse.x - p.x, dy = mouse.y - p.y;
+        var d = Math.hypot(dx,dy);
+
+        if(mouse.x!==null && d < 200 && d > 0){
+          var f = (200-d)/200;
+          var nx = dx/d, ny = dy/d;
+          // 吸引力 + 切向环绕力
+          p.vx += nx*f*.08 + -ny*f*.04;
+          p.vy += ny*f*.08 + nx*f*.04;
+          p.near = Math.min(1, p.near + .05);
+        }else{
+          p.near = Math.max(0, p.near - .03);
         }
+
         p.x += p.vx; p.y += p.vy;
-        p.vx *= .98; p.vy *= .98;
-        if(Math.abs(p.vx) < .04) p.vx += (Math.random()-.5)*.02;
-        if(Math.abs(p.vy) < .04) p.vy += (Math.random()-.5)*.02;
+        p.vx *= .96; p.vy *= .96;
+        if(Math.abs(p.vx) < .04) p.vx += (Math.random()-.5)*.015;
+        if(Math.abs(p.vy) < .04) p.vy += (Math.random()-.5)*.015;
         if(p.x<0)p.x=W; if(p.x>W)p.x=0;
         if(p.y<0)p.y=H; if(p.y>H)p.y=0;
 
+        // 呼吸大小
+        var breathe = 1 + Math.sin(time*1.5 + p.phase)*.2;
+        var r = p.baseR * breathe * (1 + p.near*.6);
+
+        // 外发光（径向渐变）
+        var glow = ctx.createRadialGradient(p.x,p.y,0,p.x,p.y,r*4);
+        if(p.gold){
+          glow.addColorStop(0,'rgba(230,195,140,'+(.8-p.near*.2)+')');
+          glow.addColorStop(.4,'rgba(184,137,74,'+(.3+p.near*.2)+')');
+          glow.addColorStop(1,'rgba(184,137,74,0)');
+        }else{
+          glow.addColorStop(0,'rgba(150,180,230,'+(.7-p.near*.2)+')');
+          glow.addColorStop(.4,'rgba(30,91,184,'+(.25+p.near*.2)+')');
+          glow.addColorStop(1,'rgba(30,91,184,0)');
+        }
+        ctx.fillStyle = glow;
         ctx.beginPath();
-        ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
-        ctx.fillStyle = p.gold ? 'rgba(184,137,74,.55)' : 'rgba(30,91,184,.4)';
+        ctx.arc(p.x,p.y,r*4,0,Math.PI*2);
+        ctx.fill();
+
+        // 中心亮点
+        ctx.beginPath();
+        ctx.arc(p.x,p.y,r*.6,0,Math.PI*2);
+        ctx.fillStyle = p.gold ? 'rgba(255,235,200,.9)' : 'rgba(210,225,255,.85)';
         ctx.fill();
       });
-
-      // 邻近连线
-      for(var i=0;i<pts.length;i++){
-        for(var j=i+1;j<pts.length;j++){
-          var a=pts[i], b=pts[j];
-          var d=Math.hypot(a.x-b.x, a.y-b.y);
-          if(d<120){
-            ctx.beginPath();
-            ctx.moveTo(a.x,a.y); ctx.lineTo(b.x,b.y);
-            ctx.strokeStyle = 'rgba(184,137,74,'+((1-d/120)*.18)+')';
-            ctx.lineWidth = .6;
-            ctx.stroke();
-          }
-        }
-      }
       requestAnimationFrame(tick);
     }
     tick();
