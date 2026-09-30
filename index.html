@@ -1,1170 +1,401 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<!--
+  极曜微科技 · 品牌页（苹果风格技巧 + 滚动帧动画带）
+  ------------------------------------------------------------
+  这是把 apple-style-learning 那套教学样式，套到真实业务内容上的成品页。
+  内容全部来自 E:\网页\index.html 里婉婉科技那部分（仪器仪表），没有编造型号。
+  新增的两个文件是本页的主角：
+    css/scrub.css   滚动帧动画带的全部视觉
+    js/scrub.js     只输出 --p / --o / --k 三个 0~1 的数
+  图片用的是 ../source 里那四张实拍图（已复制一份到 img/）。
+-->
+<html lang="zh-CN" data-theme="light">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>凡人商贸 · 婉婉科技</title>
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='18' fill='%2314181f'/%3E%3Ctext x='50' y='68' font-size='52' text-anchor='middle' fill='%23b8894a' font-family='serif' font-weight='bold'%3E凡%3C/text%3E%3C/svg%3E">
-<link rel="stylesheet" href="https://miaoda.feishu.cn/fonts/css2?family=Noto+Serif+SC:wght@400;600;700;900&family=Noto+Sans+SC:wght@300;400;500;700&display=swap">
-<style>
-  :root{
-    --ink:#232222; --ink-2:#7c8390;
-    --paper:#ccb38b; --paper-2:#83693d;
-    --gold:#b8894a; --gold-soft:#d4b483;
-    --line:#d9d2c4; --text:#2a2d34; --muted:#6b6f78;
-  }
-  *{margin:0;padding:0;box-sizing:border-box}
-  html{scroll-behavior:smooth}
-  body{
-    font-family:"Noto Sans SC",-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif;
-    background:var(--paper);color:var(--text);line-height:1.7;-webkit-font-smoothing:antialiased;
-  }
-  h1,h2,h3,.serif{font-family:"Noto Serif SC","Songti SC",serif}
-
-  /* ===== 导航 ===== */
-  nav{
-    position:fixed;top:0;left:0;right:0;z-index:100;
-    display:flex;align-items:center;justify-content:space-between;
-    padding:16px 48px;
-    background:rgba(20,24,31,.9);backdrop-filter:blur(12px);
-    border-bottom:1px solid rgba(217,210,196,.12);
-  }
-  .brand{display:flex;align-items:center;gap:12px;color:#f6f3ee;cursor:pointer}
-  .brand-mark{
-    width:38px;height:38px;border-radius:9px;
-    background:linear-gradient(135deg,var(--gold),var(--gold-soft));
-    display:grid;place-items:center;
-    font-family:"Noto Serif SC",serif;font-weight:700;color:#14181f;font-size:20px;
-  }
-  .brand-name{font-family:"Noto Serif SC",serif;font-size:16px;letter-spacing:2px}
-  .brand-name small{display:block;font-size:10px;letter-spacing:3px;color:var(--gold-soft);font-family:"Noto Sans SC",sans-serif}
-  .nav-right{display:flex;gap:12px;align-items:center}
-  .nav-btn{
-    padding:9px 20px;font-size:13.5px;letter-spacing:1px;cursor:pointer;
-    border:1px solid #4a5060;color:#e8e4dc;background:transparent;
-    transition:all .2s;font-family:inherit;
-  }
-  .nav-btn:hover{border-color:var(--gold);color:var(--gold-soft)}
-  .nav-btn.active{background:var(--gold);color:#14181f;border-color:var(--gold);font-weight:500}
-  .nav-home{font-size:13px;color:#9a9ea8;letter-spacing:1px;margin-right:8px;cursor:pointer}
-  .nav-home:hover{color:var(--gold-soft)}
-  @media(max-width:768px){
-    nav{padding:12px 16px}
-    .brand-name{font-size:13px}
-    .nav-btn{padding:7px 12px;font-size:12px}
-  }
-
-  /* ===== 视图切换 ===== */
-  .view{display:none}
-  .view.show{display:block}
-
-  /* ===== Hero（首页） ===== */
-  header.hero{
-    min-height:92vh;display:flex;flex-direction:column;justify-content:center;
-    padding:130px 48px 70px;
-    background:
-      radial-gradient(1200px 600px at 80% -10%, rgba(184,137,74,.18), transparent 60%),
-      radial-gradient(900px 500px at 10% 110%, rgba(158,59,59,.12), transparent 60%),
-      var(--ink);
-    color:#f6f3ee;position:relative;overflow:hidden;
-  }
-  .hero-tag{display:inline-flex;align-items:center;gap:10px;font-size:13px;letter-spacing:4px;color:var(--gold-soft);margin-bottom:28px}
-  .hero-tag::before{content:"";width:36px;height:1px;background:var(--gold)}
-  .hero h1{font-size:clamp(38px,6.5vw,78px);line-height:1.15;font-weight:900;letter-spacing:2px;margin-bottom:24px}
-  .hero h1 .x{color:var(--gold);font-weight:400;margin:0 12px}
-  .hero p.lead{max-width:660px;font-size:16.5px;color:#b8bcc4;font-weight:300;margin-bottom:40px}
-  .hero-actions{display:flex;gap:14px;flex-wrap:wrap}
-  .btn{display:inline-block;padding:13px 30px;font-size:14px;letter-spacing:2px;text-decoration:none;transition:all .25s;cursor:pointer;border:1px solid transparent}
-  .btn-solid{background:var(--gold);color:#14181f;font-weight:500}
-  .btn-solid:hover{background:var(--gold-soft)}
-  .btn-ghost{border-color:#4a5060;color:#e8e4dc;background:transparent}
-  .btn-ghost:hover{border-color:var(--gold);color:var(--gold-soft)}
-  .hero-meta{margin-top:70px;display:flex;gap:56px;flex-wrap:wrap;padding-top:30px;border-top:1px solid rgba(217,210,196,.15)}
-  .hero-meta .item .num{font-family:"Noto Serif SC",serif;font-size:26px;color:var(--gold-soft)}
-  .hero-meta .item .lbl{font-size:12px;color:#8a8f99;letter-spacing:2px;margin-top:4px}
-  @media(max-width:768px){header.hero{padding:110px 24px 50px}.hero-meta{gap:28px}}
-
-  /* ===== 通用 section ===== */
-  section{padding:90px 48px}
-  .sec-head{max-width:780px;margin-bottom:56px}
-  .sec-head .kicker{font-size:13px;letter-spacing:4px;color:var(--gold);margin-bottom:14px}
-  .sec-head h2{font-size:clamp(26px,3.6vw,40px);font-weight:700;line-height:1.3}
-  .sec-head p{margin-top:16px;color:var(--muted);font-size:15px}
-  @media(max-width:768px){section{padding:60px 24px}}
-
-  /* ===== 双公司入口卡片 ===== */
-  .company-grid{display:grid;grid-template-columns:1fr 1fr;gap:32px}
-  .company-card{
-    background:#fff;border:1px solid var(--line);padding:44px 38px;cursor:pointer;
-    transition:transform .3s, box-shadow .3s;
-  }
-  .company-card:hover{transform:translateY(-4px);box-shadow:0 20px 50px rgba(20,24,31,.08)}
-  .company-card .mark{width:54px;height:54px;border-radius:12px;display:grid;place-items:center;font-family:"Noto Serif SC",serif;font-size:26px;font-weight:700;margin-bottom:22px}
-  .c-trade .mark{background:#eef0f3;color:var(--ink)}
-  .c-tech .mark{background:#f4e8d8;color:var(--gold)}
-  .company-card h3{font-size:25px;margin-bottom:4px}
-  .company-card .en{font-size:12px;letter-spacing:3px;color:var(--muted);margin-bottom:18px}
-  .company-card .desc{font-size:14.5px;color:#4a4e57;margin-bottom:22px}
-  .company-card .go{font-size:13px;color:var(--gold);letter-spacing:1px}
-  @media(max-width:860px){.company-grid{grid-template-columns:1fr}}
-
-  /* ===== 子页顶部 ===== */
-  .sub-hero{
-    padding:150px 48px 70px;color:#f6f3ee;
-    background:radial-gradient(1000px 500px at 85% -10%, rgba(184,137,74,.2), transparent 60%),var(--ink);
-  }
-  .sub-hero .crumb{font-size:12px;letter-spacing:3px;color:var(--gold-soft);margin-bottom:20px}
-  .sub-hero h1{font-size:clamp(32px,5vw,58px);font-weight:900;letter-spacing:2px;margin-bottom:18px;line-height:1.2}
-  .sub-hero p{max-width:680px;color:#b8bcc4;font-size:16px;font-weight:300}
-  @media(max-width:768px){.sub-hero{padding:120px 24px 50px}}
-
-  /* ===== 产品分类网格 ===== */
-  .prod-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
-  .prod-cell{background:#fff;border:1px solid var(--line);padding:30px 26px;transition:border-color .25s}
-  .prod-cell:hover{border-color:var(--gold)}
-  .prod-cell .ic{width:38px;height:38px;color:var(--gold);margin-bottom:16px}
-  .prod-cell h4{font-size:17px;margin-bottom:10px;font-family:"Noto Serif SC",serif}
-  .prod-cell p{font-size:13.5px;color:var(--muted);line-height:1.7}
-  @media(max-width:900px){.prod-grid{grid-template-columns:1fr 1fr}}
-  @media(max-width:600px){.prod-grid{grid-template-columns:1fr}}
-
-  /* ===== 品牌条 ===== */
-  .brand-strip{background:var(--ink);padding:60px 48px}
-  .brand-strip h3{color:#f6f3ee;font-size:20px;margin-bottom:28px;font-family:"Noto Serif SC",serif}
-  .brand-strip h3 span{color:var(--gold-soft)}
-  .brand-list{display:flex;flex-wrap:wrap;gap:12px}
-  .brand-chip{padding:10px 22px;border:1px solid #3a4150;color:#cfd2d8;font-size:14px;letter-spacing:1px}
-  @media(max-width:768px){.brand-strip{padding:50px 24px}}
-
-  /* ===== 服务清单 ===== */
-  .svc-list{display:grid;grid-template-columns:repeat(3,1fr);gap:28px}
-  .svc-item{padding-top:22px;border-top:2px solid var(--gold)}
-  .svc-item .no{font-family:"Noto Serif SC",serif;font-size:13px;color:var(--gold);letter-spacing:2px;margin-bottom:12px}
-  .svc-item h4{font-size:18px;margin-bottom:10px}
-  .svc-item p{font-size:14px;color:var(--muted)}
-  @media(max-width:860px){.svc-list{grid-template-columns:1fr}}
-
-  /* ===== 联系 ===== */
-  #contact{
-    background:radial-gradient(800px 400px at 90% 20%, rgba(184,137,74,.15), transparent 60%),var(--ink-2);
-    color:#e8e4dc;padding:90px 48px;
-  }
-  #contact h2{font-size:clamp(26px,3.6vw,40px);margin-bottom:18px;color:#f6f3ee}
-  #contact p{color:#9a9ea8;max-width:560px;margin-bottom:36px}
-  .contact-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:28px;margin-top:16px}
-  .contact-grid .c-item .lbl{font-size:12px;letter-spacing:3px;color:var(--gold-soft);margin-bottom:8px}
-  .contact-grid .c-item .val{font-size:15.5px;color:#e8e4dc}
-  @media(max-width:768px){#contact{padding:60px 24px}.contact-grid{grid-template-columns:1fr;gap:20px}}
-
-  footer{
-    background:var(--ink);padding:26px 48px;
-    display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;
-    border-top:1px solid rgba(217,210,196,.1);
-    font-size:12px;color:#6b6f78;letter-spacing:1px;
-  }
-  @media(max-width:768px){footer{padding:22px}}
-
-  /* ===== 凡人商贸子页：B2B 工业风（参考制造企业官网） ===== */
-  :root{
-    --b2b:#1e5bb8; --b2b-dk:#164a96; --b2b-bg:#f4f8fc; --b2b-line:#d8e4f2;
-  }
-  .hotline-bar{
-    background:#fff;border-bottom:1px solid var(--b2b-line);
-    padding:10px 48px;display:flex;justify-content:flex-end;
-  }
-  .hotline-inner{font-size:13px;color:var(--muted)}
-  .hotline-inner .hl-label{margin-right:10px}
-  .hotline-inner .hl-num{color:var(--b2b);font-weight:700;font-size:16px;letter-spacing:1px}
-  .fanren-banner{
-    background:linear-gradient(135deg,#eaf2fb 0%,#d6e5f7 100%);
-    padding:70px 48px;display:flex;align-items:center;gap:40px;
-  }
-  .fb-text{flex:1}
-  .fb-tag{display:inline-block;background:var(--b2b);color:#fff;font-size:12px;letter-spacing:3px;padding:5px 14px;margin-bottom:20px}
-  .fb-text h1{font-size:clamp(28px,4vw,46px);color:#1a2a4a;line-height:1.25;margin-bottom:22px}
-  .fb-points{list-style:none}
-  .fb-points li{font-size:15px;color:#3a4a66;padding:6px 0 6px 22px;position:relative}
-  .fb-points li::before{content:"";position:absolute;left:0;top:14px;width:8px;height:8px;background:var(--b2b)}
-  .fb-chip-art{width:280px;flex-shrink:0}
-  @media(max-width:860px){
-    .hotline-bar{padding:10px 20px;justify-content:center}
-    .fanren-banner{flex-direction:column;padding:50px 24px}
-    .fb-chip-art{width:200px}
-  }
-  .fr-section{padding:60px 48px;background:#fff}
-  .fr-sec-head{text-align:center;margin-bottom:36px}
-  .fr-title{font-family:"Noto Serif SC",serif;font-size:26px;color:#1a2a4a;font-weight:700}
-  .fr-sub{font-size:12px;letter-spacing:6px;color:var(--b2b);margin-top:6px}
-  .fr-cats{display:flex;flex-wrap:wrap;justify-content:center;gap:10px;margin-bottom:30px}
-  .fr-cat{padding:7px 18px;border:1px solid var(--b2b-line);font-size:13px;color:#5a6a85;cursor:pointer;background:#fff}
-  .fr-cat.active,.fr-cat:hover{background:var(--b2b);color:#fff;border-color:var(--b2b)}
-  .fr-prod-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
-  .fr-prod{border:1px solid var(--b2b-line);background:#fff;padding:0;transition:all .25s;overflow:hidden}
-  .fr-prod:hover{border-color:var(--b2b);box-shadow:0 8px 24px rgba(30,91,184,.12)}
-  .fr-prod .pf-img{width:100%;height:150px;object-fit:cover;display:block;background:var(--b2b-bg)}
-  .fr-prod .pf-body{padding:20px 18px}
-  .fr-prod .pf-ic{width:28px;height:28px;color:var(--b2b);margin-bottom:10px}
-  .fr-prod h4{font-size:16px;color:#1a2a4a;margin-bottom:8px;font-family:"Noto Serif SC",serif}
-  .fr-prod p{font-size:13px;color:var(--muted);line-height:1.65}
-  .fr-prod .pf-more{display:inline-block;margin-top:10px;font-size:12px;color:var(--b2b);letter-spacing:1px;cursor:pointer}
-  @media(max-width:900px){.fr-prod-grid{grid-template-columns:1fr 1fr}}
-  @media(max-width:600px){.fr-prod-grid{grid-template-columns:1fr}}
-  .fr-advantage{background:var(--b2b-bg);padding:60px 48px;display:grid;grid-template-columns:repeat(4,1fr);gap:24px}
-  .adv-item{background:#fff;padding:30px 24px;border-top:3px solid var(--b2b)}
-  .adv-item .adv-no{font-size:12px;color:var(--b2b);letter-spacing:2px;margin-bottom:10px}
-  .adv-item h4{font-size:16px;color:#1a2a4a;margin-bottom:8px}
-  .adv-item p{font-size:13px;color:var(--muted);line-height:1.65}
-  @media(max-width:900px){.fr-advantage{grid-template-columns:1fr 1fr;padding:40px 24px}}
-  @media(max-width:560px){.fr-advantage{grid-template-columns:1fr}}
-  .fr-contact{background:#fff;padding:60px 48px;text-align:center}
-  .fr-contact .big-phone{font-family:"Noto Serif SC",serif;font-size:32px;color:var(--b2b);font-weight:700;margin:14px 0 8px}
-  .fr-contact .fr-sub-info{color:var(--muted);font-size:14px;line-height:2}
-
-  /* 产品中心：左分类 + 右产品（创版式） */
-  .fr-prod-wrap{display:flex;gap:28px;align-items:flex-start;margin-top:30px}
-  .fr-side{width:200px;flex-shrink:0;border:1px solid var(--b2b-line)}
-  .fr-side .side-tit{background:var(--b2b);color:#fff;padding:13px 20px;font-size:14px;letter-spacing:2px}
-  .fr-side .side-item{padding:12px 20px;font-size:14px;color:#3a4a66;border-bottom:1px solid var(--b2b-line);cursor:pointer;background:#fff}
-  .fr-side .side-item.active,.fr-side .side-item:hover{background:var(--b2b-bg);color:var(--b2b);box-shadow:inset 3px 0 0 var(--b2b)}
-  .fr-main{flex:1}
-  .fr-main .more{text-align:right;margin-bottom:14px}
-  .fr-main .more a{font-size:12px;color:var(--b2b);letter-spacing:1px;text-decoration:none}
-
-  /* 关于我们 */
-  .fr-about{background:var(--b2b-bg);padding:60px 48px}
-  .fr-about-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:22px;margin-top:34px}
-  .fr-about-item{background:#fff;padding:28px 24px}
-  .fr-about-item .ab-ic{width:46px;height:46px;color:var(--b2b);margin-bottom:14px}
-  .fr-about-item h4{font-size:16px;color:#1a2a4a;margin-bottom:10px;font-family:"Noto Serif SC",serif}
-  .fr-about-item p{font-size:13px;color:var(--muted);line-height:1.7}
-
-  /* 资讯中心 */
-  .fr-news{background:#fff;padding:60px 48px}
-  .fr-news-wrap{display:grid;grid-template-columns:1fr 1fr;gap:44px;margin-top:34px}
-  .news-col-tit{font-size:18px;color:#1a2a4a;border-left:4px solid var(--b2b);padding-left:12px;margin-bottom:18px;font-family:"Noto Serif SC",serif}
-  .news-col-tit small{display:block;font-size:11px;letter-spacing:2px;color:var(--muted);font-family:"Noto Sans SC",sans-serif;margin-top:3px}
-  .news-item{display:flex;gap:14px;padding:14px 0;border-bottom:1px dashed var(--b2b-line)}
-  .news-item .date{flex-shrink:0;width:54px;text-align:center;background:var(--b2b-bg);padding:8px 0}
-  .news-item .date .d{font-size:18px;color:var(--b2b);font-weight:700;line-height:1}
-  .news-item .date .m{font-size:11px;color:var(--muted);margin-top:3px}
-  .news-item .nt{font-size:14px;color:#2a3a5a;line-height:1.5}
-  .news-item .ns{font-size:12px;color:var(--muted);margin-top:4px;line-height:1.6}
-  .news-line{padding:11px 0;border-bottom:1px dashed var(--b2b-line);font-size:14px;color:#2a3a5a;cursor:pointer}
-  .news-line:hover{color:var(--b2b)}
-
-  @media(max-width:900px){
-    .fr-prod-wrap{flex-direction:column}
-    .fr-side{width:100%}
-    .fr-about-grid{grid-template-columns:1fr 1fr}
-    .fr-news-wrap{grid-template-columns:1fr;gap:30px}
-  }
-  @media(max-width:560px){
-    .fr-about-grid{grid-template-columns:1fr}
-  }
-
-  /* ===== 型号弹窗 ===== */
-  .modal-mask{
-    position:fixed;inset:0;background:rgba(10,14,22,.6);z-index:200;
-    display:none;align-items:center;justify-content:center;padding:20px;
-  }
-  .modal-mask.show{display:flex}
-  .modal-box{
-    background:#fff;border-radius:10px;max-width:560px;width:100%;
-    max-height:85vh;overflow-y:auto;box-shadow:0 24px 60px rgba(0,0,0,.25);
-  }
-  .modal-head{
-    padding:20px 26px;border-bottom:1px solid var(--b2b-line);
-    display:flex;justify-content:space-between;align-items:center;
-    position:sticky;top:0;background:#fff;border-radius:10px 10px 0 0;
-  }
-  .modal-head h3{font-size:18px;color:#1a2a4a;font-family:"Noto Serif SC",serif}
-  .modal-close{
-    width:32px;height:32px;border:none;background:var(--b2b-bg);cursor:pointer;
-    font-size:18px;color:#5a6a85;border-radius:6px;line-height:1;
-  }
-  .modal-close:hover{background:var(--b2b);color:#fff}
-  .modal-body{padding:20px 26px}
-  .modal-body .m-desc{font-size:13px;color:var(--muted);margin-bottom:14px;line-height:1.6}
-  .modal-body ul{list-style:none}
-  .modal-body ul li{
-    padding:9px 0;border-bottom:1px dashed var(--b2b-line);
-    font-size:14px;color:#2a3a5a;display:flex;justify-content:space-between;gap:10px;
-  }
-  .modal-body ul li .m-note{color:var(--muted);font-size:12px;text-align:right}
-  .modal-foot{
-    padding:16px 26px;background:var(--b2b-bg);border-radius:0 0 10px 10px;
-    font-size:14px;color:#1a2a4a;
-  }
-  .modal-foot b{color:var(--b2b);font-size:18px;letter-spacing:1px}
-</style>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>极曜微科技 · 工业检测仪器一站式选型</title>
+<meta name="description" content="极曜微科技：福禄克、飞础科、徕卡、岛津等 18 个品牌工业检测仪器供应商，正规授权渠道，原厂序列号可验真，苏州立足长三角。">
+<link rel="stylesheet" href="css/base.css">
+<link rel="stylesheet" href="css/layout.css">
+<link rel="stylesheet" href="css/effects.css">
+<link rel="stylesheet" href="css/scrub.css">   <!-- 帧动画带：单独一个文件，不要它就把这行和 scrub.js 一起删掉 -->
+<link rel="stylesheet" href="css/menu.css">    <!-- 磨砂下拉面板：不要它就删掉这行 + js/menu.js + 下面 6 个 .menu -->
 </head>
 <body>
 
-<nav>
-  <div class="brand" onclick="go('home')">
-    <div class="brand-mark">凡</div>
-    <div class="brand-name">凡人商贸 · 婉婉科技<small>FANREN × WANWAN</small></div>
-  </div>
-  <div class="nav-right">
-    <span class="nav-home" onclick="go('home')">首页</span>
-    <button class="nav-btn" id="btn-fanren" onclick="go('fanren')">关于凡人商贸</button>
-    <button class="nav-btn" id="btn-wanwan" onclick="go('wanwan')">关于婉婉科技</button>
-  </div>
-</nav>
-
-<!-- ============ 首页视图 ============ -->
-<div class="view show" id="view-home">
-
-  <header class="hero">
-    <div class="hero-tag">CHIP · INSTRUMENT · TRADING</div>
-    <h1>凡人商贸<span class="&">×</span>婉婉科技</h1>
-    <p class="lead">
-      凡人商贸专注德州仪器（TI）全系列芯片分销；婉婉科技主营福禄克（Fluke）等工业测量仪器仪表。
-      一颗芯片、一台仪表，我们都按同一种规矩来：正品、现货、报价快、售后有人接。
-    </p>
-    <div class="hero-actions">
-      <button class="btn btn-solid" onclick="go('fanren')">凡人商贸 · TI 芯片</button>
-      <button class="btn btn-ghost" onclick="go('wanwan')">婉婉科技 · 仪器仪表</button>
+<!-- ============ 导航 ============
+     每个栏目都是"触发器"：data-menu 的值对应下面某个面板的 id（menu- + 值）。
+     删掉某个面板就把对应栏目上的 data-menu / caret 一起去掉，那个栏目会自动退回普通锚点。 -->
+<header class="nav">
+  <div class="nav__inner">
+    <a class="nav__logo" href="#top">极曜微科技</a>
+    <nav class="nav__links">
+      <a href="#overview" data-menu="overview" aria-expanded="false" aria-controls="menu-overview" aria-haspopup="true">概览<span class="caret" aria-hidden="true">▾</span></a>
+      <a href="#products" data-menu="products" aria-expanded="false" aria-controls="menu-products" aria-haspopup="true">产品<span class="caret" aria-hidden="true">▾</span></a>
+      <a href="#numbers" data-menu="numbers" aria-expanded="false" aria-controls="menu-numbers" aria-haspopup="true">数据<span class="caret" aria-hidden="true">▾</span></a>
+      <a href="#gallery" data-menu="gallery" aria-expanded="false" aria-controls="menu-gallery" aria-haspopup="true">实拍<span class="caret" aria-hidden="true">▾</span></a>
+      <a href="#service" data-menu="service" aria-expanded="false" aria-controls="menu-service" aria-haspopup="true">服务<span class="caret" aria-hidden="true">▾</span></a>
+    </nav>
+    <div class="nav__tools">
+      <button class="theme-btn" type="button" aria-label="切换主题">☀</button>
+      <a class="btn btn--ghost" href="#contact" style="padding:7px 16px;font-size:14px">要报价</a>
+      <button class="nav__burger" type="button" data-menu="all" aria-label="打开菜单" aria-expanded="false" aria-controls="menu-all"><i></i></button>
     </div>
-    <div class="hero-meta">
-      <div class="item"><div class="num">TI</div><div class="lbl">芯片产品线</div></div>
-      <div class="item"><div class="num">Fluke</div><div class="lbl">仪器主力品牌</div></div>
-      <div class="item"><div class="num">苏州</div><div class="lbl">立足长三角</div></div>
-    </div>
-  </header>
+  </div>
+</header>
 
-  <section>
+<!-- 整页压暗 + 磨砂，靠 backdrop-filter 糊掉导航以下的全部内容。
+     z-index 40 低于导航(50)和面板(51)，所以只有"背景"被糊，导航和面板自己保持清晰。 -->
+<div class="menu-scrim" aria-hidden="true"></div>
+
+<!-- ============ 六个下拉面板 ============
+     写在 </header> 外面、和导航做兄弟节点，不能写进 .nav 里：
+     .nav.is-stuck 有 backdrop-filter，它会变成 fixed 后代的包含块，
+     窄屏那条 top:var(--nav-h);bottom:0 会被算成零高度。细节见 css/menu.css 头部注释。 -->
+
+<div class="menu" id="menu-overview" aria-hidden="true">
+  <div class="menu__inner">
+    <div class="menu__cols">
+      <div>
+        <p class="menu__tit">极曜微科技</p>
+        <a class="menu__item" href="#overview">多品牌仪器一站式选型<span>红外热像、声学成像、显微观察、材料分析、力学测试</span></a>
+        <a class="menu__item" href="#numbers">18 个品牌 / 8 大类<span>正规授权渠道，原厂序列号可验真</span></a>
+        <a class="menu__item" href="#contact">苏州 · 立足长三角<span>现货、报价快，售后有人接</span></a>
+      </div>
+      <div>
+        <p class="menu__tit">怎么开始</p>
+        <a class="menu__item" href="#flow">不知道型号，说场景就行<span>测什么参数、预算多少、产线还是实验室</span></a>
+        <a class="menu__item" href="#products">看八大类产品线<span>每一类的具体型号都能报出来</span></a>
+        <a class="menu__item" href="#gallery">看仓库实拍<span>所见即所得，四张实拍图</span></a>
+      </div>
+      <div>
+        <p class="menu__tit">重点看这里</p>
+        <a class="menu__item" href="#overview">滚动产品展示带<span>往下滚，四类主力机型一帧一帧推给你看</span></a>
+        <a class="menu__item" href="#service">四项服务承诺<span>正品 / 选型 / 校准 / 报价，写在合同里</span></a>
+        <a class="menu__item" href="#contact">直接要报价<span>180-1857-9934，常见机型当天出价</span></a>
+      </div>
+    </div>
+    <div class="menu__foot">
+      <p class="t-fine">页面说明：此处仅用于说明经营范围，正式上线前请补齐营业执照主体名称与 ICP 备案号。</p>
+      <a class="link-arrow" href="#products">先看产品 <span class="ar">›</span></a>
+    </div>
+  </div>
+</div>
+
+<div class="menu" id="menu-products" aria-hidden="true">
+  <div class="menu__inner">
+    <div class="menu__cols">
+      <div>
+        <p class="menu__tit">热像与声学</p>
+        <a class="menu__item" href="#products">红外热成像<span>FOTRIC 2810 / 348L、Fluke TiX1060 / Ti480U、巨哥 MAG-F6</span></a>
+        <a class="menu__item" href="#products">声学成像<span>Fluke ii1020C 泄漏与局放二合一、FOTRIC AC60 阵列</span></a>
+      </div>
+      <div>
+        <p class="menu__tit">显微与材料</p>
+        <a class="menu__item" href="#products">显微观察系统<span>徕卡 DM4M / DM18M / DCM8 / DVM6、JEOL 电镜</span></a>
+        <a class="menu__item" href="#products">材料成分分析<span>岛津 XRD-7000 / EDX7000 / EPMA-8050G、力可碳硫</span></a>
+        <a class="menu__item" href="#products">力学性能测试<span>岛津 AGX-V / UH-FX 2000KN、安东帕纳米压痕</span></a>
+      </div>
+      <div>
+        <p class="menu__tit">测量与试验</p>
+        <a class="menu__item" href="#products">电参数与现场测量<span>福禄克全系万用表、钳形表、绝缘电阻、电能质量</span></a>
+        <a class="menu__item" href="#products">老化与环境试验<span>氙灯、UV 紫外、臭氧、热老化烘箱</span></a>
+        <a class="menu__item" href="#products">半导体 / PCB<span>来料检验、板卡故障定位、焊接质量评估</span></a>
+      </div>
+    </div>
+    <div class="menu__foot">
+      <p class="t-fine">找不到对应的类目？把参数发我，我查。</p>
+      <a class="link-arrow" href="#contact">问型号 <span class="ar">›</span></a>
+    </div>
+  </div>
+</div>
+
+<div class="menu" id="menu-numbers" aria-hidden="true">
+  <div class="menu__inner">
+    <div class="menu__cols">
+      <div>
+        <p class="menu__tit">规模</p>
+        <a class="menu__item" href="#numbers">18 个品牌<span>代理与合作品牌，跨品牌帮你选型</span></a>
+        <a class="menu__item" href="#numbers">8 大类品类<span>从热成像到环境试验全覆盖</span></a>
+      </div>
+      <div>
+        <p class="menu__tit">能力</p>
+        <a class="menu__item" href="#numbers">-40℃ ~ +2000℃<span>热成像测温范围，炉口高温有对应机型</span></a>
+        <a class="menu__item" href="#numbers">0.1 nm<span>光学表面测量纵向分辨率（徕卡 DCM8）</span></a>
+      </div>
+      <div>
+        <p class="menu__tit">交付</p>
+        <a class="menu__item" href="#service">原厂序列号与保修卡<span>支持官网验真，杜绝水货翻新</span></a>
+        <a class="menu__item" href="#flow">四步选型流程<span>说场景 → 出方案 → 报价交期 → 交付校准</span></a>
+      </div>
+    </div>
+    <div class="menu__foot">
+      <p class="t-fine">上面这几个数都是本页数据带里的口径，没有另算一套。</p>
+      <a class="link-arrow" href="#numbers">看数据带 <span class="ar">›</span></a>
+    </div>
+  </div>
+</div>
+
+<div class="menu" id="menu-gallery" aria-hidden="true">
+  <div class="menu__inner">
+    <div class="menu__cols">
+      <div>
+        <p class="menu__tit">热像与显微</p>
+        <a class="menu__item" href="#gallery">红外热像仪<span>手持与在线机型</span></a>
+        <a class="menu__item" href="#gallery">显微镜系统<span>金相与电镜</span></a>
+      </div>
+      <div>
+        <p class="menu__tit">测量与板级</p>
+        <a class="menu__item" href="#gallery">工业测量仪表<span>万用表、钳形表、绝缘测试</span></a>
+        <a class="menu__item" href="#gallery">半导体与 PCB<span>芯片级失效分析</span></a>
+      </div>
+      <div>
+        <p class="menu__tit">怎么用</p>
+        <a class="menu__item" href="#overview">滚动展示带<span>同样的四张图，往下滚一帧一帧推</span></a>
+        <a class="menu__item" href="#contact">实地看机<span>提前打电话约，别白跑</span></a>
+      </div>
+    </div>
+    <div class="menu__foot">
+      <p class="t-fine">实拍横排可以左右拖动；图片是原始尺寸，还没做响应式裁切。</p>
+      <a class="link-arrow" href="#gallery">看实拍 <span class="ar">›</span></a>
+    </div>
+  </div>
+</div>
+
+<div class="menu" id="menu-service" aria-hidden="true">
+  <div class="menu__inner">
+    <div class="menu__cols">
+      <div>
+        <p class="menu__tit">正品与选型</p>
+        <a class="menu__item" href="#service">正品行货<span>正规授权，序列号保修卡齐全</span></a>
+        <a class="menu__item" href="#service">选型支持<span>多品牌之间挑最合适的型号</span></a>
+      </div>
+      <div>
+        <p class="menu__tit">售后与报价</p>
+        <a class="menu__item" href="#service">售后校准<span>保修期内对接原厂，到期校准维修</span></a>
+        <a class="menu__item" href="#service">报价快<span>常见机型当天出价，不等邮件</span></a>
+      </div>
+      <div>
+        <p class="menu__tit">联系</p>
+        <a class="menu__item" href="tel:18018579934">180-1857-9934<span>销售热线，批量与特殊规格直接打电话</span></a>
+        <a class="menu__item" href="#contact">周一至周六<span>工作时间来电优先处理</span></a>
+      </div>
+    </div>
+    <div class="menu__foot">
+      <p class="t-fine">正式上线前请补齐：授权书证明页。</p>
+      <a class="link-arrow" href="#service">看承诺 <span class="ar">›</span></a>
+    </div>
+  </div>
+</div>
+
+<!-- 窄屏专用：汉堡按钮展开的整屏菜单，只放栏目级入口，不做多列 -->
+<div class="menu" id="menu-all" aria-hidden="true">
+  <div class="menu__inner">
+    <div class="menu__cols">
+      <div>
+        <a class="menu__item" href="#overview">概览<span>多品牌仪器一站式选型</span></a>
+        <a class="menu__item" href="#products">产品<span>八大类，具体型号都能报</span></a>
+        <a class="menu__item" href="#numbers">数据<span>18 个品牌 / 8 大类</span></a>
+        <a class="menu__item" href="#gallery">实拍<span>仓库实拍，所见即所得</span></a>
+        <a class="menu__item" href="#flow">流程<span>不知道型号，说场景就行</span></a>
+        <a class="menu__item" href="#service">服务<span>四项承诺写死在合同里</span></a>
+        <a class="menu__item" href="tel:18018579934">180-1857-9934<span>要报价，直接打电话</span></a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<main id="top">
+
+<!-- ============ Hero ============ -->
+<section class="hero" id="overview">
+  <div class="orb orb--1"></div>
+  <div class="orb orb--2"></div>
+  <div class="orb orb--3"></div>
+  <p class="t-eyebrow" data-rv>极曜微科技 · 工业检测仪器综合供应商</p>
+  <h1 class="t-hero" data-rv>多品牌仪器<br><span class="t-grad">一站式选型</span></h1>
+  <p class="t-sub" data-rv style="max-width:44ch;margin-top:18px">
+    红外热像、声学成像、显微观察、材料分析、力学测试全覆盖。
+    正规授权渠道，原厂序列号与保修卡，支持官网验真。
+  </p>
+  <div class="hero__cta" data-rv>
+    <a class="btn" href="#contact">说需求，帮你配型号</a>
+    <a class="link-arrow" href="#products">看产品分类 <span class="ar">›</span></a>
+  </div>
+  <p class="hero__scroll t-fine">继续滚动，看一段苹果式的滚动动画 <span aria-hidden="true">↓</span></p>
+</section>
+
+<!-- ============ 品牌跑马灯 ============ -->
+<div class="marquee" aria-label="代理与合作品牌">
+  <div class="marquee__track">
+    <span>Fluke 福禄克</span><span>·</span><span>FOTRIC 飞础科</span><span>·</span><span>Leica 徕卡</span><span>·</span><span>Shimadzu 岛津</span><span>·</span><span>Anton Paar 安东帕</span><span>·</span><span>Thermo Fisher 赛默飞</span><span>·</span><span>JEOL 日本电子</span><span>·</span><span>Zeiss 蔡司</span><span>·</span><span>Keysight 是德</span><span>·</span><span>Tektronix 泰克</span><span>·</span>
+    <span>Fluke 福禄克</span><span>·</span><span>FOTRIC 飞础科</span><span>·</span><span>Leica 徕卡</span><span>·</span><span>Shimadzu 岛津</span><span>·</span><span>Anton Paar 安东帕</span><span>·</span><span>Thermo Fisher 赛默飞</span><span>·</span><span>JEOL 日本电子</span><span>·</span><span>Zeiss 蔡司</span><span>·</span><span>Keysight 是德</span><span>·</span><span>Tektronix 泰克</span><span>·</span>
+  </div>
+</div>
+
+<!-- ============ 本页主角：滚动帧动画带 ============
+     data-scrub 是 js/scrub.js 的挂载标记；每个 .scrub__item 就是一"帧"。
+     想加一帧：复制一个 .scrub__item，改图片和文案就行，帧数由 JS 自动数出来。 -->
+<section class="scrub" data-scrub aria-label="产品分类滚动展示">
+  <div class="scrub__stage">
+    <p class="scrub__label">Product Lines</p>
+
+    <figure class="scrub__item is-active">
+      <img class="scrub__img" src="img/thermal.jpg" alt="红外热像仪实拍" decoding="async">
+      <figcaption class="scrub__cap">
+        <p class="scrub__kicker">01 红外热成像</p>
+        <h3 class="scrub__t">把"热"变成看得见的图像</h3>
+        <p class="scrub__d">测温范围 -40℃ ~ +2000℃。FOTRIC 2810 / 348L、Fluke TiX1060 / Ti480U、巨哥 MAG-F6，手持、在线、科研、炉口四种场景都有对应机型。</p>
+      </figcaption>
+    </figure>
+
+    <figure class="scrub__item">
+      <img class="scrub__img" src="img/microscope.jpg" alt="显微镜系统实拍" decoding="async">
+      <figcaption class="scrub__cap">
+        <p class="scrub__kicker">02 显微观察系统</p>
+        <h3 class="scrub__t">从金相到扫描电镜</h3>
+        <p class="scrub__d">徕卡 DM4M / DM18M 研究级金相、DCM8 光学表面测量纵向分辨率 0.1nm、JEOL JSM-7610F Plus 场发射电镜，共 12 个在售型号。</p>
+      </figcaption>
+    </figure>
+
+    <figure class="scrub__item">
+      <img class="scrub__img" src="img/tester.jpg" alt="工业测量仪表实拍" decoding="async">
+      <figcaption class="scrub__cap">
+        <p class="scrub__kicker">03 电参数与现场测量</p>
+        <h3 class="scrub__t">产线维护与计量校准够用</h3>
+        <p class="scrub__d">福禄克全系数字万用表、钳形表、绝缘电阻测试、电能质量分析仪；Fluke ii1020C 与 FOTRIC AC60 覆盖气体泄漏、局部放电、气密性检测。</p>
+      </figcaption>
+    </figure>
+
+    <figure class="scrub__item">
+      <img class="scrub__img" src="img/chip.jpg" alt="半导体与 PCB 检测实拍" decoding="async">
+      <figcaption class="scrub__cap">
+        <p class="scrub__kicker">04 半导体 / PCB</p>
+        <h3 class="scrub__t">芯片级失效分析</h3>
+        <p class="scrub__d">来料检验、板卡故障定位、焊接质量评估。不确定该用哪台？把应用场景说清楚，我们在多品牌之间帮你挑。</p>
+      </figcaption>
+    </figure>
+
+    <div class="scrub__hud">
+      <span class="scrub__step" data-step>01 / 04</span>
+      <span class="scrub__bar"><i></i></span>
+      <span class="scrub__hint">滚动推进</span>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 产品分类 ============ -->
+<section class="section section--alt" id="products">
+  <div class="wrap">
     <div class="sec-head">
-      <div class="kicker">ABOUT · 两家公司</div>
-      <h2>点进去看各自做什么</h2>
-      <p>一家卖芯片，一家卖仪器。采购端口不同，但交付标准一致。</p>
+      <p class="t-eyebrow" data-rv>Products</p>
+      <h2 class="t-title" data-rv>八大类，一次问清</h2>
+      <p class="t-body" data-rv style="margin-top:12px">下面每一类的具体型号都能报出来。找不到对应的？把参数发我，我查。</p>
     </div>
-    <div class="company-grid">
-      <div class="company-card c-trade" onclick="go('fanren')">
-        <div class="mark">凡</div>
-        <h3>凡人商贸</h3>
-        <div class="en">FANREN TRADING · TI CHIPS</div>
-        <p class="desc">
-          德州仪器（Texas Instruments）全系列芯片分销商。覆盖模拟器件、电源管理、
-          嵌入式处理器与接口芯片，面向工业控制、汽车电子与方案设计公司提供现货与配单服务。
-        </p>
-        <div class="go">进入凡人商贸 →</div>
-      </div>
-      <div class="company-card c-tech" onclick="go('wanwan')">
-        <div class="mark">婉</div>
-        <h3>婉婉科技</h3>
-        <div class="en">WANWAN TECH · TEST & MEASUREMENT</div>
-        <p class="desc">
-          福禄克（Fluke）等品牌工业测量仪器仪表供应商。数字万用表、示波器、钳形表、
-          热像仪、校准器、电能质量分析仪——面向产线维护、计量校准与研发测试场景。
-        </p>
-        <div class="go">进入婉婉科技 →</div>
-      </div>
-    </div>
-  </section>
-
-  <section id="contact">
-    <h2>询价 / 找料 / 选型</h2>
-    <p>把 BOM 表、型号或测量需求发过来，我们当天回报价。做不了的料号也会直说，不耽误你进度。</p>
-    <div class="contact-grid">
-      <div class="c-item"><div class="lbl">CHIP BOM</div><div class="val">凡人商贸 · 芯片配单询价</div></div>
-      <div class="c-item"><div class="lbl">INSTRUMENT</div><div class="val">婉婉科技 · 仪器选型报价</div></div>
-      <div class="c-item"><div class="lbl">LOCATION</div><div class="val">江苏 · 苏州</div></div>
-    </div>
-  </section>
-</div>
-
-<!-- ============ 凡人商贸视图 ============ -->
-<div class="view" id="view-fanren">
-
-  <!-- 顶部热线 -->
-  <div class="hotline-bar">
-    <div class="hotline-inner">
-      <span class="hl-label">咨询热线</span>
-      <span class="hl-num">400-000-0000</span>
+    <div class="grid">
+      <article class="card" data-rv><div class="card__ic" aria-hidden="true">◉</div><h3>红外热成像</h3><p>FOTRIC 2810 / 348L / 248M、Fluke TiX1060 / Ti480U / RSE60、巨哥 MAG-F6、艾睿 G600。</p><a class="link-arrow" href="#contact">问型号 <span class="ar">›</span></a></article>
+      <article class="card" data-rv><div class="card__ic" aria-hidden="true">∿</div><h3>声学成像</h3><p>Fluke ii1020C 气体泄漏与局放二合一、FOTRIC AC60 162 麦克风阵列。</p><a class="link-arrow" href="#contact">问型号 <span class="ar">›</span></a></article>
+      <article class="card" data-rv><div class="card__ic" aria-hidden="true">⊙</div><h3>显微观察</h3><p>徕卡 DM4M / DM18M / DCM8 / DVM6、JEOL 台式与场发射电镜、赛默飞 APREO。</p><a class="link-arrow" href="#contact">问型号 <span class="ar">›</span></a></article>
+      <article class="card" data-rv><div class="card__ic" aria-hidden="true">⇅</div><h3>力学性能测试</h3><p>岛津 AGX-V / AG-X / UH-FX 2000KN 万能与液压机、MMT 微力疲劳、安东帕纳米压痕。</p><a class="link-arrow" href="#contact">问型号 <span class="ar">›</span></a></article>
+      <article class="card" data-rv><div class="card__ic" aria-hidden="true">⬡</div><h3>材料成分分析</h3><p>岛津 XRD-7000 / EDX7000 / EPMA-8050G、安捷伦 5110 ICP-OES、力可碳硫与氧氮氢。</p><a class="link-arrow" href="#contact">问型号 <span class="ar">›</span></a></article>
+      <article class="card" data-rv><div class="card__ic" aria-hidden="true">▣</div><h3>老化与环境试验</h3><p>氙灯老化、UV 紫外老化、臭氧老化、热老化烘箱，可靠性测试配套。</p><a class="link-arrow" href="#contact">问型号 <span class="ar">›</span></a></article>
     </div>
   </div>
+</section>
 
-  <!-- Banner -->
-  <div class="fanren-banner">
-    <div class="fb-text">
-      <div class="fb-tag">TEXAS INSTRUMENTS 全系列分销</div>
-      <h1>TI 芯片现货供应<br>配单 · 询价 · 替代料</h1>
-      <ul class="fb-points">
-        <li>原厂正规渠道，批次标签可追溯</li>
-        <li>常用料号常备库存，小批量当天发货</li>
-        <li>整张 BOM 配单，缺料 / 停产料一次报齐</li>
-      </ul>
-    </div>
-    <svg class="fb-chip-art" viewBox="0 0 200 200" fill="none">
-      <rect x="55" y="55" width="90" height="90" rx="8" fill="#1e5bb8"/>
-      <rect x="75" y="75" width="50" height="50" rx="4" fill="#fff" opacity=".9"/>
-      <text x="100" y="108" text-anchor="middle" font-family="Arial" font-size="16" font-weight="bold" fill="#1e5bb8">TI</text>
-      <g stroke="#1e5bb8" stroke-width="4">
-        <line x1="70" y1="40" x2="70" y2="55"/><line x1="100" y1="40" x2="100" y2="55"/><line x1="130" y1="40" x2="130" y2="55"/>
-        <line x1="70" y1="145" x2="70" y2="160"/><line x1="100" y1="145" x2="100" y2="160"/><line x1="130" y1="145" x2="130" y2="160"/>
-        <line x1="40" y1="70" x2="55" y2="70"/><line x1="40" y1="100" x2="55" y2="100"/><line x1="40" y1="130" x2="55" y2="130"/>
-        <line x1="145" y1="70" x2="160" y2="70"/><line x1="145" y1="100" x2="160" y2="100"/><line x1="145" y1="130" x2="160" y2="130"/>
-      </g>
-    </svg>
-  </div>
-
-  <!-- 产品中心：左分类 + 右产品 -->
-  <section class="fr-section">
-    <div class="fr-sec-head">
-      <div class="fr-title">产品中心</div>
-      <div class="fr-sub">PRODUCT</div>
-    </div>
-    <div class="fr-prod-wrap">
-      <div class="fr-side">
-        <div class="side-tit">产品分类</div>
-        <div class="side-item active">全部产品</div>
-        <div class="side-item">模拟芯片</div>
-        <div class="side-item">电源管理</div>
-        <div class="side-item">嵌入式处理器</div>
-        <div class="side-item">接口与隔离</div>
-        <div class="side-item">传感器</div>
-        <div class="side-item">逻辑标准件</div>
-      </div>
-      <div class="fr-main">
-        <div class="more"><a href="javascript:void(0)">查看更多 +</a></div>
-        <div class="fr-prod-grid" style="margin-top:0">
-          <div class="fr-prod">
-            <img class="pf-img" src="source/chip.jpg" alt="TI 芯片">
-            <div class="pf-body">
-              <svg class="pf-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="9"/><path d="M8 12h8M12 8v8"/></svg>
-              <h4>运算放大器 OPA</h4>
-              <p>OPA 系列运放，主力料号常备库存。</p>
-              <span class="pf-more">查看详情 →</span>
-            </div>
-          </div>
-          <div class="fr-prod">
-            <svg class="pf-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M13 2L4 14h6l-1 8 9-12h-6l1-8z"/></svg>
-            <h4>DC-DC 电源芯片</h4>
-            <p>开关稳压、LDO、电池管理 BQ 系列。</p>
-            <span class="pf-more">查看详情 →</span>
-          </div>
-          <div class="fr-prod">
-            <svg class="pf-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="5" y="5" width="14" height="14" rx="2"/><path d="M9 9h6v6H9z"/></svg>
-            <h4>MSP430 MCU</h4>
-            <p>超低功耗微控制器，按项目批次供货。</p>
-            <span class="pf-more">查看详情 →</span>
-          </div>
-          <div class="fr-prod">
-            <svg class="pf-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 12h16M4 12l4-4M4 12l4 4M20 12l-4-4M20 12l-4 4"/></svg>
-            <h4>RS-485 / CAN 接口</h4>
-            <p>工业通信收发器、ISO 数字隔离器。</p>
-            <span class="pf-more">查看详情 →</span>
-          </div>
-          <div class="fr-prod">
-            <svg class="pf-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="3"/><path d="M12 3v3M12 18v3M3 12h3M18 12h3"/></svg>
-            <h4>温度 / 电流传感器</h4>
-            <p>面向工业现场与仪器板卡配套。</p>
-            <span class="pf-more">查看详情 →</span>
-          </div>
-          <div class="fr-prod">
-            <svg class="pf-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 7h18M3 12h18M3 17h12"/></svg>
-            <h4>74 系列逻辑件</h4>
-            <p>电平转换、模拟开关，缺料当日补。</p>
-            <span class="pf-more">查看详情 →</span>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- 关于我们 -->
-  <section class="fr-about">
-    <div class="fr-sec-head" style="margin-bottom:0">
-      <div class="fr-title">关于我们</div>
-      <div class="fr-sub">ABOUT</div>
-    </div>
-    <div class="fr-about-grid">
-      <div class="fr-about-item">
-        <svg class="ab-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 2l3 6 6 1-4.5 4 1 6-5.5-3-5.5 3 1-6L3 9l6-1z"/></svg>
-        <h4>渠道优势</h4>
-        <p>深耕 TI 分销渠道，常用料号常备库存，特殊料号可向原厂及授权代理调货，交期可控。</p>
-      </div>
-      <div class="fr-about-item">
-        <svg class="ab-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20c.8-3.5 3.5-5.5 6.5-5.5s5.7 2 6.5 5.5"/><circle cx="17" cy="9" r="2.5"/><path d="M15.5 14.6c2.8.3 5 2.1 5.7 4.9"/></svg>
-        <h4>配单团队</h4>
-        <p>熟悉 TI 全系列料号与替代关系，BOM 整单配单，缺料、停产、替代一次报齐。</p>
-      </div>
-      <div class="fr-about-item">
-        <svg class="ab-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 13h4l2-7 4 14 2-7h4"/></svg>
-        <h4>服务响应</h4>
-        <p>询价当天回，小批量当天发货，急料顺丰次日达；验货不对包退。</p>
-      </div>
-      <div class="fr-about-item">
-        <svg class="ab-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 21h18M5 21V8l7-5 7 5v13"/><path d="M9 21v-6h6v6"/></svg>
-        <h4>企业定位</h4>
-        <p>立足苏州、服务长三角工业与电子制造客户，做小批量、快响应的芯片供应商。</p>
-      </div>
-    </div>
-  </section>
-
-  <!-- 资讯中心 -->
-  <section class="fr-news">
-    <div class="fr-sec-head" style="margin-bottom:0">
-      <div class="fr-title">资讯中心</div>
-      <div class="fr-sub">NEWS</div>
-    </div>
-    <div class="fr-news-wrap">
-      <div class="fr-news-col">
-        <div class="news-col-tit">公司动态<small>COMPANY NEWS</small></div>
-        <div class="news-item">
-          <div class="date"><div class="d">18</div><div class="m">2026-08</div></div>
-          <div>
-            <div class="nt">凡人商贸新增 TI C2000 实时控制 MCU 现货批次</div>
-            <div class="ns">面向电机驱动、光伏逆变客户开放小批量试样，急料当周可发。</div>
-          </div>
-        </div>
-        <div class="news-item">
-          <div class="date"><div class="d">06</div><div class="m">2026-06</div></div>
-          <div>
-            <div class="nt">苏州本地客户 BOM 整单配单服务上线</div>
-            <div class="ns">整表发来，缺料、替代、停产料号一次报齐，不用采购挨个询价。</div>
-          </div>
-        </div>
-      </div>
-      <div class="fr-news-col">
-        <div class="news-col-tit">行业动态<small>INDUSTRY NEWS</small></div>
-        <div class="news-line">·  TI 工业模拟器件交期恢复正常，分销现货库存逐步回升</div>
-        <div class="news-line">·  国产替代背景下，常用 TI 料号选型与替代方案参考</div>
-        <div class="news-line">·  2026 年功率半导体与电源管理芯片市场走势观察</div>
-        <div class="news-line">·  工业自动化带动 MSP430、C2000 需求持续增长</div>
-      </div>
-    </div>
-  </section>
-
-  <!-- 联系 -->
-  <div class="fr-contact">
-    <div class="fr-title">联系我们</div>
-    <div class="fr-sub" style="font-size:12px;letter-spacing:6px;color:var(--b2b);margin:6px 0 10px">CONTACT</div>
-    <div class="big-phone">400-000-0000</div>
-    <div class="fr-sub-info">
-      业务：凡人商贸 · TI 芯片销售（联系方式待补充）<br>
-      地址：江苏 · 苏州　|　工作时间：周一至周六 9:00 – 18:00
+<!-- ============ 数据带 ============ -->
+<section class="section" id="numbers">
+  <div class="wrap">
+    <div class="stats">
+      <div data-rv><div class="stat__num" data-to="18" data-suffix=" 个">0</div><div class="stat__lab">代理 / 合作品牌</div></div>
+      <div data-rv><div class="stat__num" data-to="8" data-suffix=" 大类">0</div><div class="stat__lab">仪器品类覆盖</div></div>
+      <div data-rv><div class="stat__num" data-to="2000" data-suffix="℃">0</div><div class="stat__lab">热成像测温上限</div></div>
+      <div data-rv><div class="stat__num" data-to="0.1" data-dec="1" data-suffix=" nm">0</div><div class="stat__lab">光学表面测量分辨率</div></div>
     </div>
   </div>
-</div>
+</section>
 
-<!-- ============ 婉婉科技视图 ============ -->
-<div class="view" id="view-wanwan">
+<!-- ============ 实拍画廊 ============ -->
+<section class="section section--alt" id="gallery">
+  <div class="wrap sec-head">
+    <p class="t-eyebrow" data-rv>Gallery</p>
+    <h2 class="t-title" data-rv>仓库实拍，所见即所得</h2>
+  </div>
+  <div class="rail">
+    <div class="rail__item" data-rv><img src="img/thermal.jpg" alt="红外热像仪" style="height:260px;width:100%;object-fit:cover;border-radius:var(--r)" loading="lazy" decoding="async"></div>
+    <div class="rail__item" data-rv><img src="img/microscope.jpg" alt="显微镜系统" style="height:260px;width:100%;object-fit:cover;border-radius:var(--r)" loading="lazy" decoding="async"></div>
+    <div class="rail__item" data-rv><img src="img/tester.jpg" alt="工业测量仪表" style="height:260px;width:100%;object-fit:cover;border-radius:var(--r)" loading="lazy" decoding="async"></div>
+    <div class="rail__item" data-rv><img src="img/chip.jpg" alt="芯片与 PCB" style="height:260px;width:100%;object-fit:cover;border-radius:var(--r)" loading="lazy" decoding="async"></div>
+  </div>
+</section>
 
-  <!-- 顶部热线 -->
-  <div class="hotline-bar">
-    <div class="hotline-inner">
-      <span class="hl-label">销售热线</span>
-      <span class="hl-num">180-1857-9934</span>
+<!-- ============ 选型流程 ============ -->
+<section class="section" id="flow">
+  <div class="wrap" style="display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.1fr);gap:48px;align-items:start">
+    <div class="sec-head" style="margin:0">
+      <p class="t-eyebrow" data-rv="left">How it works</p>
+      <h2 class="t-title" data-rv="left">不知道型号？<br>说场景就行</h2>
+      <p class="t-body" data-rv="left">测什么参数、预算多少、用在产线还是实验室 —— 这三句话说清楚，我们在多品牌之间帮你配。</p>
+    </div>
+    <div class="tl">
+      <div class="tl__row" data-rv="right"><h4>1. 说清应用场景</h4><p>举例子最快：测炉口温度、查压缩空气漏点、给来料做金相。</p></div>
+      <div class="tl__row" data-rv="right"><h4>2. 出选型方案</h4><p>给 2~3 个档位的机型对比，写清分辨率、量程、精度差在哪。</p></div>
+      <div class="tl__row" data-rv="right"><h4>3. 报价与交期</h4><p>现货当日确认；需要调货的给准确到货时间，不口头承诺。</p></div>
+      <div class="tl__row" data-rv="right"><h4>4. 交付与校准</h4><p>随机附原厂序列号与保修卡，到期校准、维修、耗材后续都接。</p></div>
     </div>
   </div>
+</section>
 
-  <!-- Banner -->
-  <div class="fanren-banner">
-    <div class="fb-text">
-      <div class="fb-tag">工业科研检测仪器 · 综合供应商</div>
-      <h1>福禄克 · 飞础科 · 徕卡 · 岛津<br>多品牌仪器一站式选型</h1>
-      <ul class="fb-points">
-        <li>红外热像、声学成像、显微镜、材料分析、力学测试全覆盖</li>
-        <li>正规渠道，原厂保修，支持官网验真</li>
-        <li>不确定型号？说应用场景，我们帮你配</li>
-      </ul>
+<!-- ============ 服务承诺（深色分区）============ -->
+<section class="section section--dark" id="service">
+  <div class="wrap">
+    <div class="sec-head">
+      <p class="t-eyebrow" data-rv>Service</p>
+      <h2 class="t-title" data-rv>四件事我们写死在合同里</h2>
     </div>
-    <svg class="fb-chip-art" viewBox="0 0 200 200" fill="none">
-      <rect x="45" y="60" width="70" height="50" rx="6" fill="#1e5bb8"/>
-      <rect x="120" y="80" width="45" height="35" rx="4" fill="#d4b483"/>
-      <circle cx="60" cy="140" r="14" fill="none" stroke="#1e5bb8" stroke-width="4"/>
-      <circle cx="100" cy="150" r="10" fill="none" stroke="#1e5bb8" stroke-width="4"/>
-      <circle cx="140" cy="145" r="12" fill="none" stroke="#1e5bb8" stroke-width="4"/>
-      <path d="M55 75h50M55 88h35M55 101h45" stroke="#fff" stroke-width="3"/>
-      <path d="M128 90h30M128 100h20" stroke="#14181f" stroke-width="2.5"/>
-    </svg>
-  </div>
-
-  <!-- 产品中心：左分类 + 右产品 -->
-  <section class="fr-section">
-    <div class="fr-sec-head">
-      <div class="fr-title">产品中心</div>
-      <div class="fr-sub">PRODUCT</div>
-    </div>
-    <div class="fr-prod-wrap">
-      <div class="fr-side">
-        <div class="side-tit">仪器分类</div>
-        <div class="side-item active">全部产品</div>
-        <div class="side-item">红外热成像</div>
-        <div class="side-item">声学成像</div>
-        <div class="side-item">显微观察系统</div>
-        <div class="side-item">力学性能测试</div>
-        <div class="side-item">材料成分分析</div>
-        <div class="side-item">高分子测试</div>
-        <div class="side-item">半导体 / PCB</div>
-        <div class="side-item">局放 / 环境监测</div>
-      </div>
-      <div class="fr-main">
-        <div class="more"><a href="javascript:void(0)">查看更多 +</a></div>
-        <div class="fr-prod-grid" style="margin-top:0">
-          <div class="fr-prod">
-            <img class="pf-img" src="source/thermal.jpg" alt="红外热像仪">
-            <div class="pf-body">
-              <svg class="pf-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 3a9 9 0 019 9M12 3a9 9 0 00-9 9M12 3v6M7 18c2-2 4-3 5-3s3 1 5 3M12 21v-3"/></svg>
-              <h4>红外热像仪</h4>
-              <p>FOTRIC 2810 / 348L、Fluke Ti480U / TiX1060、巨哥 MAG-F6，测温范围 -40~2000℃。</p>
-              <span class="pf-more">查看型号 →</span>
-            </div>
-          </div>
-          <div class="fr-prod">
-            <svg class="pf-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 12h4l2-6 4 12 2-6h6"/></svg>
-            <h4>声学成像仪</h4>
-            <p>Fluke ii1020C、FOTRIC AC60，气体泄漏、局部放电、气密性检测。</p>
-            <span class="pf-more">查看型号 →</span>
-          </div>
-          <div class="fr-prod">
-            <img class="pf-img" src="source/microscope.jpg" alt="显微镜系统">
-            <div class="pf-body">
-              <svg class="pf-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="4" y="9" width="16" height="11" rx="1"/><path d="M12 9V4M8 4h8"/></svg>
-              <h4>显微镜系统</h4>
-              <p>徕卡 DM4M / DM18M 金相显微镜、JEOL 扫描电镜、体视 / 数码显微镜。</p>
-              <span class="pf-more">查看型号 →</span>
-            </div>
-          </div>
-          <div class="fr-prod">
-            <img class="pf-img" src="source/tester.jpg" alt="万能材料试验机">
-            <div class="pf-body">
-              <svg class="pf-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 20V8M12 20V4M19 20v-9"/><path d="M3 20h18"/></svg>
-              <h4>万能 / 疲劳试验机</h4>
-              <p>岛津 AGX-V / AG-X 万能试验机、EHF 电液伺服疲劳机、高低温拉伸。</p>
-              <span class="pf-more">查看型号 →</span>
-            </div>
-          </div>
-          <div class="fr-prod">
-            <svg class="pf-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="11" cy="11" r="7"/><path d="M16 16l5 5"/></svg>
-            <h4>光谱 / 元素分析</h4>
-            <p>岛津 XRD-7000、EDX 荧光光谱、Agilent ICP-OES、NITON XL3T 手持合金分析。</p>
-            <span class="pf-more">查看型号 →</span>
-          </div>
-          <div class="fr-prod">
-            <svg class="pf-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 12c3-6 6 6 9 0s6 6 9 0"/></svg>
-            <h4>热分析 / 流变仪</h4>
-            <p>梅特勒 DSC / TGA / DMA、安东帕 MCR 旋转流变仪、熔融指数仪、硫化仪。</p>
-            <span class="pf-more">查看型号 →</span>
-          </div>
-          <div class="fr-prod">
-            <svg class="pf-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="5" y="5" width="14" height="14" rx="2"/><path d="M9 9h6v6H9z"/></svg>
-            <h4>半导体 / PCB 检测</h4>
-            <p>高倍金相显微镜、台阶仪、膜厚仪、椭偏仪、EDS 能谱分析。</p>
-            <span class="pf-more">查看型号 →</span>
-          </div>
-          <div class="fr-prod">
-            <svg class="pf-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M13 2L4 14h6l-1 8 9-12h-6l1-8z"/></svg>
-            <h4>局放 / 环境监测</h4>
-            <p>多功能局放检测定位仪、高压巡检仪、手持 / 在线尘埃粒子计数器。</p>
-            <span class="pf-more">查看型号 →</span>
-          </div>
-          <div class="fr-prod">
-            <svg class="pf-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6 3h12v6a6 6 0 01-12 0V3z"/><path d="M12 15v6M8 21h8"/></svg>
-            <h4>老化试验箱</h4>
-            <p>氙灯老化箱、UV 紫外老化、臭氧老化、热老化烘箱，可靠性测试配套。</p>
-            <span class="pf-more">查看型号 →</span>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- 代理品牌 -->
-  <div class="fr-about" style="padding-top:60px;padding-bottom:60px">
-    <div class="fr-sec-head" style="margin-bottom:0">
-      <div class="fr-title">代理 / 合作品牌</div>
-      <div class="fr-sub">BRANDS</div>
-    </div>
-    <div style="display:flex;flex-wrap:wrap;gap:10px;margin-top:30px">
-      <span class="fr-cat" style="cursor:default">Fluke 福禄克</span>
-      <span class="fr-cat" style="cursor:default">FOTRIC 飞础科</span>
-      <span class="fr-cat" style="cursor:default">Leica 徕卡</span>
-      <span class="fr-cat" style="cursor:default">Shimadzu 岛津</span>
-      <span class="fr-cat" style="cursor:default">Anton Paar 安东帕</span>
-      <span class="fr-cat" style="cursor:default">Thermo Fisher 赛默飞</span>
-      <span class="fr-cat" style="cursor:default">JEOL 日本电子</span>
-      <span class="fr-cat" style="cursor:default">Mettler Toledo 梅特勒</span>
-      <span class="fr-cat" style="cursor:default">Agilent 安捷伦</span>
-      <span class="fr-cat" style="cursor:default">Hitachi 日立</span>
-      <span class="fr-cat" style="cursor:default">Zeiss 蔡司</span>
-      <span class="fr-cat" style="cursor:default">Bruker 布鲁克</span>
-      <span class="fr-cat" style="cursor:default">Mitutoyo 三丰</span>
-      <span class="fr-cat" style="cursor:default">Olympus 奥林巴斯</span>
-      <span class="fr-cat" style="cursor:default">Hioki 日置</span>
-      <span class="fr-cat" style="cursor:default">Keysight 是德</span>
-      <span class="fr-cat" style="cursor:default">Tektronix 泰克</span>
-      <span class="fr-cat" style="cursor:default">Leco 力可</span>
+    <div class="grid">
+      <article class="card span3" data-rv style="background:#fff;border:0;color:#1d1d1f"><h3 style="color:#1d1d1f">正品行货</h3><p style="color:#6e6e73">正规授权渠道，带原厂序列号与保修卡，支持官网验真，杜绝水货翻新。</p></article>
+      <article class="card span3" data-rv style="background:#fff;border:0;color:#1d1d1f"><h3 style="color:#1d1d1f">选型支持</h3><p style="color:#6e6e73">说清测什么参数、什么预算、什么场景，我们在多品牌间挑最合适的型号。</p></article>
+      <article class="card span3" data-rv style="background:#fff;border:0;color:#1d1d1f"><h3 style="color:#1d1d1f">售后校准</h3><p style="color:#6e6e73">保修期内对接原厂售后，到期校准、维修、耗材更换渠道一并提供。</p></article>
+      <article class="card span3" data-rv style="background:#fff;border:0;color:#1d1d1f"><h3 style="color:#1d1d1f">报价快</h3><p style="color:#6e6e73">常见机型当天出价格，批量与特殊规格直接打电话，不让你等邮件。</p></article>
     </div>
   </div>
+</section>
 
-  <!-- 关于我们 -->
-  <section class="fr-about">
-    <div class="fr-sec-head" style="margin-bottom:0">
-      <div class="fr-title">我们的服务</div>
-      <div class="fr-sub">SERVICE</div>
-    </div>
-    <div class="fr-about-grid">
-      <div class="fr-about-item">
-        <svg class="ab-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 2l3 6 6 1-4.5 4 1 6-5.5-3-5.5 3 1-6L3 9l6-1z"/></svg>
-        <h4>正品行货</h4>
-        <p>走正规授权渠道，带原厂序列号与保修卡，支持官网验真，杜绝水货翻新。</p>
-      </div>
-      <div class="fr-about-item">
-        <svg class="ab-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20c.8-3.5 3.5-5.5 6.5-5.5s5.7 2 6.5 5.5"/><circle cx="17" cy="9" r="2.5"/></svg>
-        <h4>选型支持</h4>
-        <p>说清楚测什么参数、什么预算、应用场景，我们帮你在多品牌间挑最合适的型号。</p>
-      </div>
-      <div class="fr-about-item">
-        <svg class="ab-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 13h4l2-7 4 14 2-7h4"/></svg>
-        <h4>售后校准</h4>
-        <p>保修期内对接原厂售后，到期校准、维修、耗材更换渠道一并提供。</p>
-      </div>
-      <div class="fr-about-item">
-        <svg class="ab-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 21h18M5 21V8l7-5 7 5v13"/></svg>
-        <h4>行业覆盖</h4>
-        <p>教育科研、医疗、电子制造、新能源、锂电、汽车、钢铁冶金、石化、半导体、食品饮料。</p>
-      </div>
-    </div>
-  </section>
-
-  <!-- 资讯中心 -->
-  <section class="fr-news">
-    <div class="fr-sec-head" style="margin-bottom:0">
-      <div class="fr-title">资讯中心</div>
-      <div class="fr-sub">NEWS</div>
-    </div>
-    <div class="fr-news-wrap">
-      <div class="fr-news-col">
-        <div class="news-col-tit">公司动态<small>COMPANY NEWS</small></div>
-        <div class="news-item">
-          <div class="date"><div class="d">10</div><div class="m">2026-09</div></div>
-          <div>
-            <div class="nt">婉婉科技新增 FOTRIC 专家级热像仪样机，欢迎预约测试</div>
-            <div class="ns">2810 / 348L 样机到位，可现场测温升、测泄漏。</div>
-          </div>
-        </div>
-        <div class="news-item">
-          <div class="date"><div class="d">22</div><div class="m">2026-07</div></div>
-          <div>
-            <div class="nt">配合高校实验室采购，提供整机 + 培训 + 校准方案</div>
-            <div class="ns">显微镜、力学试验机、热分析整套打包报价。</div>
-          </div>
-        </div>
-      </div>
-      <div class="fr-news-col">
-        <div class="news-col-tit">行业动态<small>INDUSTRY NEWS</small></div>
-        <div class="news-line">·  红外热成像在设备预测性维护中的应用要点</div>
-        <div class="news-line">·  局放检测：声学成像 vs 超声巡检仪怎么选</div>
-        <div class="news-line">·  材料实验室万能试验机选型与载荷量程匹配</div>
-        <div class="news-line">·  氙灯老化箱与 UV 老化箱的适用场景区别</div>
-      </div>
-    </div>
-  </section>
-
-  <!-- 联系我们 -->
-  <div class="fr-contact">
-    <div class="fr-title">联系我们</div>
-    <div class="fr-sub" style="font-size:12px;letter-spacing:6px;color:var(--b2b);margin:6px 0 10px">CONTACT</div>
-    <div class="big-phone">180-1857-9934</div>
-    <div class="fr-sub-info">
-      业务：婉婉科技 · 工业测量仪器仪表销售<br>
-      地址：江苏 · 苏州　|　工作时间：周一至周六 9:00 – 18:00
-    </div>
+<!-- ============ 联系 ============ -->
+<section class="section" id="contact" style="text-align:center">
+  <div class="wrap">
+    <p class="t-eyebrow" data-rv>Contact</p>
+    <h2 class="t-title" data-rv style="max-width:22ch;margin:0 auto">要报价，直接打电话</h2>
+    <p class="t-hero" data-rv style="margin-top:22px"><span class="t-grad">180-1857-9934</span></p>
+    <p class="t-body" data-rv style="margin-top:14px">苏州 · 立足长三角。现货、正品、报价快，售后有人接。</p>
+    <div class="hero__cta" data-rv style="justify-content:center"><a class="btn" href="tel:18018579934">拨号</a><a class="btn btn--ghost" href="#products">再看一眼产品</a></div>
   </div>
-</div>
+</section>
 
-<!-- 型号弹窗 -->
-<div class="modal-mask" id="modalMask" onclick="if(event.target===this)closeModal()">
-  <div class="modal-box">
-    <div class="modal-head">
-      <h3 id="modalTitle">型号清单</h3>
-      <button class="modal-close" onclick="closeModal()">×</button>
+</main>
+
+<footer class="footer">
+  <div class="wrap">
+    <div class="footer__cols">
+      <div><h5>极曜微科技</h5><ul><li>工业检测仪器综合供应商</li><li>苏州 · 立足长三角</li></ul></div>
+      <div><h5>产品</h5><ul><li>红外热成像</li><li>声学成像</li><li>显微观察系统</li><li>力学性能测试</li><li>材料成分分析</li></ul></div>
+      <div><h5>服务</h5><ul><li>选型支持</li><li>原厂保修对接</li><li>到期校准与维修</li><li>耗材供应</li></ul></div>
+      <div><h5>联系</h5><ul><li>销售热线 180-1857-9934</li><li>工作时间 周一至周六</li></ul></div>
     </div>
-    <div class="modal-body">
-      <div class="m-desc" id="modalDesc"></div>
-      <ul id="modalList"></ul>
-    </div>
-    <div class="modal-foot" id="modalFoot"></div>
+    <p class="footer__note">
+      页面说明：此处仅用于说明经营范围。
+      正式上线前请补齐：营业执照主体名称、ICP 备案号、授权书证明页。
+    </p>
   </div>
-</div>
-
-<footer>
-  <div>© 凡人商贸 · 婉婉科技</div>
-  <div>FANREN × WANWAN · SUZHOU</div>
 </footer>
 
-<script>
-  function go(view){
-    document.querySelectorAll('.view').forEach(function(v){v.classList.remove('show');});
-    document.getElementById('view-'+view).classList.add('show');
-    document.getElementById('btn-fanren').classList.toggle('active', view==='fanren');
-    document.getElementById('btn-wanwan').classList.toggle('active', view==='wanwan');
-    window.scrollTo(0,0);
-    try{ history.replaceState(null,'','#'+view); }catch(e){}
-  }
-  (function(){
-    var h = (location.hash||'').replace('#','');
-    if(h==='fanren'||h==='wanwan'){ go(h); }
-  })();
-
-  /* ===== 型号弹窗数据 ===== */
-  var CATALOG = {
-    '运算放大器 OPA':{
-      desc:'TI 模拟器件主力料号，常备库存，小批量当天发。',
-      models:[
-        ['OPA2333','零漂移 CMOS 运放，双通道'],
-        ['OPA2188','36V 零漂移运放'],
-        ['OPA192','36V 高精密运放'],
-        ['OPA827','低噪声精密运放'],
-        ['THS4011','高速电压反馈运放'],
-        ['LMV358','低电压轨到轨运放']
-      ],
-      phone:'400-000-0000'
-    },
-    'DC-DC 电源芯片':{
-      desc:'工业与消费类供电方案常用料号。',
-      models:[
-        ['LM2596','3A 降压开关稳压器'],
-        ['TPS5430','3A 降压 DC-DC'],
-        ['BQ24072','电池管理 / 充电'],
-        ['TLV70033','LDO 低压差'],
-        ['LM317','可调三端稳压'],
-        ['TPS61023','升压转换器']
-      ],
-      phone:'400-000-0000'
-    },
-    'MSP430 MCU':{
-      desc:'超低功耗微控制器，按项目批次供货。',
-      models:[
-        ['MSP430G2553','LaunchPad 常用'],
-        ['MSP430FR5994','FRAM 系列'],
-        ['MSP430F149','经典 16 位'],
-        ['MSP430I2041','高精度模拟前端']
-      ],
-      phone:'400-000-0000'
-    },
-    'RS-485 / CAN 接口':{
-      desc:'工业通信收发器与数字隔离。',
-      models:[
-        ['MAX485','RS-485 收发器'],
-        ['SN65HVD230','CAN 收发器'],
-        ['ISO3082','隔离 RS-485'],
-        ['ADM2483','磁隔离 RS-485'],
-        ['TL16C550C','串口扩展']
-      ],
-      phone:'400-000-0000'
-    },
-    '温度 / 电流传感器':{
-      desc:'面向工业现场与仪器板卡配套。',
-      models:[
-        ['PT100 / PT1000','铂电阻温度'],
-        ['LM35','模拟温度传感器'],
-        ['INA219','I2C 电流/功率监测'],
-        ['ACS712','霍尔电流传感器'],
-        ['Honeywell 压力','压阻式压力']
-      ],
-      phone:'400-000-0000'
-    },
-    '74 系列逻辑件':{
-      desc:'电平转换、模拟开关，BOM 缺料当日补。',
-      models:[
-        ['74HC138','3-8 译码器'],
-        ['74LVC245','8 路总线收发'],
-        ['TXS0108E','8 位双向电平转换'],
-        ['CD4051','模拟多路开关'],
-        ['SN74HC595','串入并出']
-      ],
-      phone:'400-000-0000'
-    },
-    '红外热像仪':{
-      desc:'测温范围 -40℃ ~ +2000℃，覆盖手持、在线、科研、高温炉口多场景。',
-      models:[
-        ['FOTRIC 2810','专家级科研热像仪，1280×1024'],
-        ['FOTRIC 348L','手持热像仪，640×480，-20~650℃'],
-        ['FOTRIC 248M','研发台式热像仪，30Hz 全辐射流'],
-        ['FLUKE TiX1060','福禄克大师级，1024×768，30Hz'],
-        ['FLUKE Ti480U','手持高清，640×480，60Hz'],
-        ['FLUKE RSE60','在线式，1.8Mbps 视频输出'],
-        ['巨哥 HT90 TD2500','高温型，可穿透玻璃窗口测温'],
-        ['巨哥 MAG-F6','科学级，0~500℃ 精度 0.7℃'],
-        ['艾睿 G600','气体热成像，SF6/氨气等检测']
-      ],
-      phone:'180-1857-9934'
-    },
-    '声学成像仪':{
-      desc:'阵列声波定位，用于气体泄漏、局部放电、气密性检测。',
-      models:[
-        ['FLUKE ii1020C','气体泄漏 + PDQ 局放检测二合一'],
-        ['FOTRIC AC60','162 麦克风阵列，154 螺旋阵']
-      ],
-      phone:'180-1857-9934'
-    },
-    '显微镜系统':{
-      desc:'光学金相显微镜、体视、数码、扫描电镜全系列。',
-      models:[
-        ['LEICA DM4M','研究级半自动正置金相'],
-        ['LEICA DM18M/C/A','倒置金相显微镜'],
-        ['LEICA DCM8','光学表面测量，0.1nm 纵向'],
-        ['LEICA DVM6','超景深视频显微镜'],
-        ['LEICA DMS1000','数码显微镜'],
-        ['LEICA S8 APO','体视显微镜'],
-        ['JEOL JSM-7610F Plus','场发射扫描电镜 FE-SEM'],
-        ['JEOL JSM-IT200','钨灯丝扫描电镜'],
-        ['JEOL JCM-7000','台式扫描电镜'],
-        ['Thermo QUATTRO ESEM','环境扫描电镜'],
-        ['Thermo APREO','高分辨扫描电镜'],
-        ['Thermo SCIOS 2','FIB-SEM 双束系统']
-      ],
-      phone:'180-1857-9934'
-    },
-    '万能 / 疲劳试验机':{
-      desc:'拉伸、压缩、弯曲、疲劳、高低温、冲击、蠕变全力学覆盖。',
-      models:[
-        ['岛津 AGX-V','电子万能试验机，10~600kN'],
-        ['岛津 AG-X','电子万能，10~300kN'],
-        ['岛津 AGS-X','高低温拉伸，-196~+700℃'],
-        ['岛津 UH-FX 2000KN','大载荷液压万能'],
-        ['岛津 MMT','微力电磁疲劳试验机'],
-        ['岛津 EHF','电液伺服疲劳机，1~300kN'],
-        ['岛津 USF-2000','超声波疲劳试验机'],
-        ['Anton Paar 纳米压痕仪','薄膜硬度/弹性模量'],
-        ['Anton Paar 划痕仪','涂层结合力'],
-        ['Anton Paar 摩擦磨损试验机','摩擦系数/磨损率']
-      ],
-      phone:'180-1857-9934'
-    },
-    '光谱 / 元素分析':{
-      desc:'金属、合金、高纯材料成分与物相分析。',
-      models:[
-        ['岛津 EPMA-8050G','电子探针显微分析仪'],
-        ['岛津 XRD-7000','X 射线衍射仪'],
-        ['岛津 EDX7000','X 射线荧光光谱'],
-        ['Agilent 5110 ICP-OES','电感耦合等离子发射'],
-        ['Agilent AA 240','原子吸收光谱'],
-        ['Thermo ARL 8860','直读光谱仪'],
-        ['NITON XL3T','手持合金分析仪'],
-        ['HITACHI PMI-MASTER PRO2','移动式直读光谱'],
-        ['LECO TCH-600','氧氮氢分析仪'],
-        ['LECO CS-230','碳硫分析仪']
-      ],
-      phone:'180-1857-9934'
-    },
-    '热分析 / 流变仪':{
-      desc:'高分子材料物性、流变、热性能、老化测试。',
-      models:[
-        ['Mettler Toledo DMA','动态热机械分析仪'],
-        ['Mettler Toledo TMA','热机械分析仪'],
-        ['Mettler Toledo DSC','差示扫描量热'],
-        ['Mettler Toledo TGA','热重分析仪'],
-        ['Anton Paar MCR','高级旋转流变仪'],
-        ['CFT-500EX','毛细管流变仪'],
-        ['MP1200P','熔融指数测定仪'],
-        ['MooneyCheck Profile','无转子硫化仪'],
-        ['RHEOCHECK MD','门尼粘度计']
-      ],
-      phone:'180-1857-9934'
-    },
-    '半导体 / PCB 检测':{
-      desc:'晶圆、封装、PCB 失效分析与尺寸测量。',
-      models:[
-        ['LEICA DM2700','高倍金相显微镜'],
-        ['LEICA DM8000/DM12000','检查显微镜'],
-        ['D600','台阶仪，2D/3D 轮廓'],
-        ['DCM8','光学轮廓仪'],
-        ['F50','光谱反射膜厚仪'],
-        ['PROFORMA 300I','硅片测厚/翘曲'],
-        ['FILM SENSE','椭偏仪'],
-        ['STM-7','测量显微镜'],
-        ['JED-2300F','EDS 能谱仪']
-      ],
-      phone:'180-1857-9934'
-    },
-    '局放 / 环境监测':{
-      desc:'高压局放定位与洁净环境粒子监测。',
-      models:[
-        ['多功能局放检测定位仪','开关柜/电缆局放定位'],
-        ['高压局部放电巡检仪','手持巡检'],
-        ['手持尘埃粒子计数器','洁净室现场检测'],
-        ['在线式尘埃粒子计数器','环境实时监测']
-      ],
-      phone:'180-1857-9934'
-    },
-    '老化试验箱':{
-      desc:'高分子/涂层耐环境可靠性测试。',
-      models:[
-        ['ATLAS Ci3000+','氙灯老化试验箱'],
-        ['ATLAS UV-TEST','紫外老化试验箱'],
-        ['GIBITRE OZONE CHECK','臭氧老化试验箱'],
-        ['BINDER FED55','热老化烘箱']
-      ],
-      phone:'180-1857-9934'
-    }
-  };
-
-  function showModal(title){
-    var data = CATALOG[title];
-    if(!data){
-      document.getElementById('modalTitle').textContent = title;
-      document.getElementById('modalDesc').textContent = '具体型号清单请电话咨询，我们根据您的应用场景推荐。';
-      document.getElementById('modalList').innerHTML = '';
-      document.getElementById('modalFoot').innerHTML = '询价电话：<b>180-1857-9934</b>';
-    }else{
-      document.getElementById('modalTitle').textContent = title;
-      document.getElementById('modalDesc').textContent = data.desc;
-      var html = '';
-      data.models.forEach(function(m){
-        html += '<li><span>'+m[0]+'</span><span class="m-note">'+m[1]+'</span></li>';
-      });
-      document.getElementById('modalList').innerHTML = html;
-      document.getElementById('modalFoot').innerHTML = '以上为常见型号，批量/特殊规格询价电话：<b>'+data.phone+'</b>';
-    }
-    document.getElementById('modalMask').classList.add('show');
-  }
-  function closeModal(){
-    document.getElementById('modalMask').classList.remove('show');
-  }
-
-  document.querySelectorAll('.fr-prod').forEach(function(card){
-    var more = card.querySelector('.pf-more');
-    if(!more) return;
-    more.style.cursor='pointer';
-    more.addEventListener('click', function(){
-      var h4 = card.querySelector('h4');
-      if(h4) showModal(h4.textContent.trim());
-    });
-  });
-
-  /* ===== 背景粒子：光晕呼吸 + 鼠标环绕 ===== */
-  (function(){
-    var canvas = document.createElement('canvas');
-    canvas.style.cssText = 'position:fixed;inset:0;z-index:9999;pointer-events:none;';
-    document.body.appendChild(canvas);
-    var ctx = canvas.getContext('2d');
-    var W, H, pts = [];
-    var mouse = {x:null, y:null};
-    var time = 0;
-
-    function resize(){
-      W = canvas.width = window.innerWidth;
-      H = canvas.height = window.innerHeight;
-    }
-    window.addEventListener('resize', resize);
-    resize();
-
-    var N = Math.min(90, Math.max(45, Math.floor(W*H/18000)));
-    for(var i=0;i<N;i++){
-      pts.push({
-        x:Math.random()*W, y:Math.random()*H,
-        vx:(Math.random()-.5)*.3, vy:(Math.random()-.5)*.3,
-        baseR:Math.random()*1.1+.7,
-        phase:Math.random()*Math.PI*2,
-        gold:Math.random()>.45,
-        near:0
-      });
-    }
-
-    window.addEventListener('mousemove', function(e){
-      mouse.x = e.clientX; mouse.y = e.clientY;
-    });
-    window.addEventListener('mouseleave', function(){
-      mouse.x = null; mouse.y = null;
-    });
-
-    function tick(){
-      time += .016;
-      ctx.clearRect(0,0,W,H);
-
-      // 鼠标光晕（三层径向渐变）
-      if(mouse.x!==null){
-        var g = ctx.createRadialGradient(mouse.x,mouse.y,0,mouse.x,mouse.y,150);
-        g.addColorStop(0,'rgba(212,180,131,.1)');
-        g.addColorStop(.4,'rgba(184,137,74,.04)');
-        g.addColorStop(1,'rgba(184,137,74,0)');
-        ctx.fillStyle = g;
-        ctx.beginPath();
-        ctx.arc(mouse.x,mouse.y,150,0,Math.PI*2);
-        ctx.fill();
-      }
-
-      // 连线：只在鼠标附近 220px 内动态生成
-      if(mouse.x!==null){
-        for(var i=0;i<pts.length;i++){
-          for(var j=i+1;j<pts.length;j++){
-            var a=pts[i], b=pts[j];
-            var d=Math.hypot(a.x-b.x, a.y-b.y);
-            var md=Math.min(
-              Math.hypot(a.x-mouse.x,a.y-mouse.y),
-              Math.hypot(b.x-mouse.x,b.y-mouse.y)
-            );
-            if(d<130 && md<220){
-              ctx.beginPath();
-              ctx.moveTo(a.x,a.y); ctx.lineTo(b.x,b.y);
-              ctx.strokeStyle = 'rgba(184,137,74,'+((1-d/130)*.25*(1-md/220))+')';
-              ctx.lineWidth = .5;
-              ctx.stroke();
-            }
-          }
-        }
-      }
-
-      pts.forEach(function(p){
-        var dx = mouse.x - p.x, dy = mouse.y - p.y;
-        var d = Math.hypot(dx,dy);
-
-        if(mouse.x!==null && d < 200 && d > 0){
-          var f = (200-d)/200;
-          var nx = dx/d, ny = dy/d;
-          // 吸引力 + 切向环绕力
-          p.vx += nx*f*.08 + -ny*f*.04;
-          p.vy += ny*f*.08 + nx*f*.04;
-          p.near = Math.min(1, p.near + .05);
-        }else{
-          p.near = Math.max(0, p.near - .03);
-        }
-
-        p.x += p.vx; p.y += p.vy;
-        p.vx *= .96; p.vy *= .96;
-        if(Math.abs(p.vx) < .04) p.vx += (Math.random()-.5)*.015;
-        if(Math.abs(p.vy) < .04) p.vy += (Math.random()-.5)*.015;
-        if(p.x<0)p.x=W; if(p.x>W)p.x=0;
-        if(p.y<0)p.y=H; if(p.y>H)p.y=0;
-
-        // 呼吸大小
-        var breathe = 1 + Math.sin(time*1.5 + p.phase)*.2;
-        var r = p.baseR * breathe * (1 + p.near*.3);
-        var halo = r*2.2;
-
-        // 外发光（径向渐变）
-        var glow = ctx.createRadialGradient(p.x,p.y,0,p.x,p.y,halo);
-        if(p.gold){
-          glow.addColorStop(0,'rgba(230,195,140,'+(.45-p.near*.1)+')');
-          glow.addColorStop(.35,'rgba(184,137,74,'+(.16+p.near*.12)+')');
-          glow.addColorStop(1,'rgba(184,137,74,0)');
-        }else{
-          glow.addColorStop(0,'rgba(150,180,230,'+(.4-p.near*.1)+')');
-          glow.addColorStop(.35,'rgba(30,91,184,'+(.14+p.near*.12)+')');
-          glow.addColorStop(1,'rgba(30,91,184,0)');
-        }
-        ctx.fillStyle = glow;
-        ctx.beginPath();
-        ctx.arc(p.x,p.y,halo,0,Math.PI*2);
-        ctx.fill();
-
-        // 中心亮点
-        ctx.beginPath();
-        ctx.arc(p.x,p.y,r*.5,0,Math.PI*2);
-        ctx.fillStyle = p.gold ? 'rgba(255,235,200,.75)' : 'rgba(210,225,255,.7)';
-        ctx.fill();
-      });
-      requestAnimationFrame(tick);
-    }
-    tick();
-  })();
-</script>
-
+<script src="js/reveal.js"></script>
+<script src="js/parallax.js"></script>
+<script src="js/counter.js"></script>
+<script src="js/nav.js"></script>
+<script src="js/menu.js"></script>    <!-- 必须紧跟 nav.js：nav.js 会跳过带 data-menu 的栏目，两个脚本才不打架 -->
+<script src="js/hover.js"></script>
+<script src="js/scrub.js"></script>   <!-- 放在最后：它只依赖 DOM 结构，不依赖其它脚本 -->
 </body>
 </html>
-<!-- 
